@@ -75,3 +75,93 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
 ```
+
+8. configuramos nuestras entidades con todas sus propiedades como en este caso en el modulo auth importamos nuestro modelo o entidad User (importamos y exportamos)
+
+```js
+@Module({
+  controllers: [AuthController],
+  providers: [AuthService],
+  imports: [TypeOrmModule.forFeature([User ])],
+   exports:[
+    TypeOrmModule
+  ]
+})
+
+```
+
+9. Creamos la logica de la creacion de usuarios con el Async Await
+10. Incriptar la contraseña (instalamos bcrypt)
+```
+npm i bcrypt
+npm i -D @types/bcrypt
+
+```
+11. Generamos los tokens para los usuarios instalando estos paquetes
+```
+ npm i @nestjs/passport passport
+ npm i @nestjs/jwt passport-jwt
+ npm i -D @types/passport-jwt
+
+```
+12. en el authMOdule configuramos nuestro jwt_secret importamos y exportamos el jwt strategy, esto nos sirve para proteger nuestras rutas en base a un bearer token
+
+```js
+
+
+@Injectable()
+export class JwtStrategy extends PassportStrategy(Strategy){
+constructor(
+    @InjectRepository(User)
+    private readonly userRepository:Repository<User>,
+    configSevice:ConfigService
+){
+    super({
+        secretOrKey:configSevice.get('JWT_SECRET'),
+        jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken(),
+        
+    });
+}
+
+    async validate(payload:JwtPayload):Promise<User>{
+        
+
+        const {documentNumber}= payload;
+        const user = await this.userRepository.findOneBy({documentNumber});
+        if (!user)
+        throw new UnauthorizedException('token not valid')
+
+        if(!user.isActive)
+        throw new UnauthorizedException('User is inactive, talk with an  admin');
+
+        return user;
+    }
+
+}
+_____________________________________________
+providers: [AuthService,JwtStrategy],
+imports: [
+  ConfigModule,
+    TypeOrmModule.forFeature([User]),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          secret: configService.get('JWT_SECRET'),
+          signOptions: {
+            expiresIn: '2h',
+          },
+        };s
+      },
+    }),
+  ],
+   exports: [TypeOrmModule,JwtStrategy,PassportModule,JwtModule],
+```
+
+
+
+
+
+
