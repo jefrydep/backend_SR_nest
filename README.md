@@ -159,6 +159,7 @@ imports: [
   ],
    exports: [TypeOrmModule,JwtStrategy,PassportModule,JwtModule],
 ```
+13. ahora nos creamos un guard personalizado para proteger nuestras rutas
 
 
 
