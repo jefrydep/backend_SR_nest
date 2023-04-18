@@ -159,7 +159,14 @@ imports: [
   ],
    exports: [TypeOrmModule,JwtStrategy,PassportModule,JwtModule],
 ```
-13. ahora nos creamos un guard personalizado para proteger nuestras rutas
+13. ahora nos creamos un guard personalizado para proteger nuestras rutas, hacer la rutas privadas, crear una carpeta decorators tambien una carpeta guards con el comando
+
+```js
+nest g gu auth/guards/userRole --no-spec
+nest g d auth/decorators/roleProtected --no-spec
+```
+- importamor auth module en el modulo que queremos usar
+
 
 
 
