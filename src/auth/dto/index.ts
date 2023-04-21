@@ -1,2 +1,3 @@
-export { CreateUserDto } from "./create-user copy";
+export { CreateUserDto } from "./create-user.dto";
+
 export { LoginUserDto } from "./login-user.dto";
