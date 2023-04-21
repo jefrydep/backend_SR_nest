@@ -29,7 +29,7 @@ try {
  
 
   findAll() {
-    return `This action returns all cliente`;
+    return  this.clienteRepository.find({})
   }
 
   findOne(id: number) {
