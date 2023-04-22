@@ -3,6 +3,10 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClienteModule } from './cliente/cliente.module';
+import { LoteModule } from './lote/lote.module';
+import { VentaModule } from './venta/venta.module';
+import { ManzanaModule } from './manzana/manzana.module';
+import { ProyectoModule } from './proyecto/proyecto.module';
 
 @Module({
   imports: [
@@ -21,6 +25,14 @@ import { ClienteModule } from './cliente/cliente.module';
     AuthModule,
 
     ClienteModule,
+
+    LoteModule,
+
+    VentaModule,
+
+    ManzanaModule,
+
+    ProyectoModule,
   ],
   controllers: [],
   providers: [],

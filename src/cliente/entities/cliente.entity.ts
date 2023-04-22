@@ -7,7 +7,7 @@ export class Cliente {
 
   @Column('text')
   fullName: string;
-s
+
   @Column('text')
   age: string;
 
