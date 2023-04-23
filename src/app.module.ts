@@ -7,6 +7,7 @@ import { LoteModule } from './lote/lote.module';
 import { VentaModule } from './venta/venta.module';
 import { ManzanaModule } from './manzana/manzana.module';
 import { ProyectoModule } from './proyecto/proyecto.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -33,6 +34,8 @@ import { ProyectoModule } from './proyecto/proyecto.module';
     ManzanaModule,
 
     ProyectoModule,
+
+    CommonModule,
   ],
   controllers: [],
   providers: [],

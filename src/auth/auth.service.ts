@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto, LoginUserDto } from './dto/';
@@ -12,6 +13,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class AuthService {
@@ -69,5 +71,33 @@ export class AuthService {
     if (error.code === '23505') throw new BadRequestException(error.detail);
     console.log(error);
     throw new InternalServerErrorException('please check server logs');
+  }
+
+
+  findAll(paginationDto:PaginationDto) {
+    const{limit = 10,offset = 0}= paginationDto
+    return  this.userRepository.find({
+      take:limit,
+      skip:offset,
+      //TODO: RELACIONES
+
+    })
+  }
+
+  async findOne(id:string){
+    const user = await this.userRepository.findOneBy({id});
+
+    if(!user)
+    throw new NotFoundException(`user with ${id} not found`)
+
+    return user;
+  }
+
+
+
+  async remove (id:string){
+    const user = await this.findOne(id);
+    await this.userRepository.remove(user);
+    
   }
 }
