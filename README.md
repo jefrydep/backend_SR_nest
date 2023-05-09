@@ -171,5 +171,5 @@ nest g d auth/decorators/roleProtected --no-spec
 
 
 
-
+ojo " enable cors added to run"
 
