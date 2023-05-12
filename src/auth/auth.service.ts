@@ -75,7 +75,7 @@ export class AuthService {
 
 
   findAll(paginationDto:PaginationDto) {
-    const{limit = 10,offset = 0}= paginationDto
+    const{limit = 0,offset = 0}= paginationDto
     return  this.userRepository.find({
       take:limit,
       skip:offset,
