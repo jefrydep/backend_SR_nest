@@ -16,6 +16,7 @@ import { Auth } from './decorators/auth-decorator';
 import { validRoles } from './interfaces/valid-roles';
 
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -46,10 +47,10 @@ export class AuthController {
     return this.authService.findOne(id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-  //   return this.authService.update(+id, updateAuthDto);
-  // }
+  @Patch(':id')
+  update(@Param('id',ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.authService.update(id, updateUserDto);
+  }
 
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {

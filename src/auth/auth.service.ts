@@ -14,6 +14,8 @@ import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { UpdateClienteDto } from 'src/cliente/dto/update-cliente.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +34,7 @@ export class AuthService {
       });
       await this.userRepository.save(user);
       // momentaniamente elimanos la contraseña porque no queremos mostrarlo
-      delete user.password;
+      // delete user.password;
       return {
         ...user,
         token: this.getJwtToken({ id: user.id }),
@@ -46,7 +48,7 @@ export class AuthService {
     const { password, documentNumber } = loginUserDto;
     const user = await this.userRepository.findOne({
       where: { documentNumber },
-      select: { documentNumber: true, password: true,id:true,name:true},
+      select: { documentNumber: true, password: true, id: true, name: true },
     });
     if (!user)
       throw new UnauthorizedException(
@@ -73,31 +75,41 @@ export class AuthService {
     throw new InternalServerErrorException('please check server logs');
   }
 
-
-  findAll(paginationDto:PaginationDto) {
-    const{limit = 0,offset = 0}= paginationDto
-    return  this.userRepository.find({
-      take:limit,
-      skip:offset,
+  findAll(paginationDto: PaginationDto) {
+    const { limit = 0, offset = 0 } = paginationDto;
+    return this.userRepository.find({
+      take: limit,
+      skip: offset,
       //TODO: RELACIONES
-
-    })
+    });
   }
 
-  async findOne(id:string){
-    const user = await this.userRepository.findOneBy({id});
+  async findOne(id: string) {
+    const user = await this.userRepository.findOneBy({ id });
 
-    if(!user)
-    throw new NotFoundException(`user with ${id} not found`)
+    if (!user) throw new NotFoundException(`user with ${id} not found`);
 
     return user;
   }
 
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.preload({
+      id: id,
+      password:updateUserDto.password?bcrypt.hashSync(updateUserDto.password,10):undefined,
+      ...updateUserDto,
+    });
+    if (!user) throw new NotFoundException(`Client with id: ${id} not found`);
+    await this.userRepository.save(user);
+    console.log(user)
+    // id: id,
+    // password: updateUserDto.newPassword ? bcrypt.hashSync(updateUserDto.newPassword, 10) : undefined,
+    // // Otros campos que deseas actualizar
 
+    return user;
+  }
 
-  async remove (id:string){
+  async remove(id: string) {
     const user = await this.findOne(id);
     await this.userRepository.remove(user);
-    
   }
 }

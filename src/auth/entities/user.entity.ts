@@ -11,7 +11,7 @@ export class User {
   documentNumber: string;
 
   @Column('text',{
-    select:false
+    select:true
   })
   password: string;
 
