@@ -6,19 +6,19 @@ export class Proyecto {
   id: string;
 
   @Column('text')
-  LoteCode: string;
+  nameProject: string;
 
   @Column('text')
-   areaM2:string;
+   location:string;
+
+  // @Column('text')
+  //  userId:string;
 
   @Column('text')
-   userId:string;
+   aream2:string;
 
   @Column('text')
-   manzanaId:string;
-
-  @Column('text')
-   proyectoId:string;
+   abbrevation:string;
 
    
 

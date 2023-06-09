@@ -6,19 +6,33 @@ export class Lote {
   id: string;
 
   @Column('text')
-  LoteCode: string;
+  loteCode: string;
+
 
   @Column('text')
-   areaM2:string;
+  loteState:string;
+
 
   @Column('text')
-   userId:string;
+   aream2:string;
 
-  @Column('text')
-   manzanaId:string;
+   @Column('text')
+   price:string;
 
-  @Column('text')
-   proyectoId:string;
+   @Column('text')
+   location:string;
+
+   @Column('text')
+   partidNumber?:string
+
+  // @Column('text')
+  //  userId:string;
+
+  // @Column('text')
+  //  manzanaId:string;
+
+  // @Column('text')
+  //  proyectoId:string;
 
    
 
