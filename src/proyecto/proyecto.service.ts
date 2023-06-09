@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProyectoDto } from './dto/create-proyecto.dto';
 import { UpdateProyectoDto } from './dto/update-proyecto.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -29,8 +29,16 @@ export class ProyectoService {
     return `This action returns a #${id} proyecto`;
   }
 
-  update(id: number, updateProyectoDto: UpdateProyectoDto) {
-    return `This action updates a #${id} proyecto`;
+  async update(id: string, updateProyectoDto: UpdateProyectoDto) {
+    const proyecto = await this.proyectoRepository.preload({
+      id:id,
+      ...updateProyectoDto
+    });
+    if(!proyecto)
+    throw new NotFoundException(`proyecto with id: ${id} not found` )
+    await this.proyectoRepository.save(proyecto);
+
+    return proyecto;
   }
 
   remove(id: number) {

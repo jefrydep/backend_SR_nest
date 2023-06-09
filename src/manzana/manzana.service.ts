@@ -30,8 +30,11 @@ export class ManzanaService {
     return `This action returns a #${id} manzana`;
   }
 
-  update(id: number, updateManzanaDto: UpdateManzanaDto) {
-    return `This action updates a #${id} manzana`;
+  async update(id: string, updateManzanaDto: UpdateManzanaDto) {
+    const manzana = await this.manzanaRepositorry.preload({
+      id:id,
+      ...updateManzanaDto
+    })
   }
 
   remove(id: number) {

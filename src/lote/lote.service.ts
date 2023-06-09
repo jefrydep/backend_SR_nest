@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateLoteDto } from './dto/create-lote.dto';
 import { UpdateLoteDto } from './dto/update-lote.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -32,8 +32,16 @@ export class LoteService {
     return `This action returns a #${id} lote`;
   }
 
-  update(id: number, updateLoteDto: UpdateLoteDto) {
-    return `This action updates a #${id} lote`;
+  async update(id: string, updateLoteDto: UpdateLoteDto) {
+    const lote  = await this.loteRespository.preload({
+      id:id,
+      ...updateLoteDto,
+    });
+    if(!lote)
+    throw new NotFoundException(`lote with id : ${id} not found`)
+    await this.loteRespository.save(lote);
+    return lote;
+   
   }
 
   remove(id: number) {

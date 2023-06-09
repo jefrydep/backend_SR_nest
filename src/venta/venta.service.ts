@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateVentaDto } from './dto/create-venta.dto';
 import { UpdateVentaDto } from './dto/update-venta.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -30,8 +30,17 @@ private readonly ventaRepository:Repository<Venta>
     return `This action returns a #${id} venta`;
   }
 
-  update(id: number, updateVentaDto: UpdateVentaDto) {
-    return `This action updates a #${id} venta`;
+  async update(id: string, updateVentaDto: UpdateVentaDto) {
+
+    const venta  = await this.ventaRepository.preload({
+      id:id,
+      ...updateVentaDto
+    });
+    if(!venta)
+    throw new NotFoundException(`Venta with id : ${id} not found`)
+    await this.ventaRepository.save(venta);
+    return venta;
+     
   }
 
   remove(id: number) {

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { ManzanaService } from './manzana.service';
 import { CreateManzanaDto } from './dto/create-manzana.dto';
 import { UpdateManzanaDto } from './dto/update-manzana.dto';
@@ -23,8 +23,8 @@ export class ManzanaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateManzanaDto: UpdateManzanaDto) {
-    return this.manzanaService.update(+id, updateManzanaDto);
+  update(@Param('id',ParseUUIDPipe) id: string, @Body() updateManzanaDto: UpdateManzanaDto) {
+    return this.manzanaService.update(id, updateManzanaDto);
   }
 
   @Delete(':id')
