@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { LoteService } from './lote.service';
 import { CreateLoteDto } from './dto/create-lote.dto';
 import { UpdateLoteDto } from './dto/update-lote.dto';
@@ -23,8 +23,8 @@ export class LoteController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLoteDto: UpdateLoteDto) {
-    return this.loteService.update(+id, updateLoteDto);
+  update(@Param('id',ParseUUIDPipe) id: string, @Body() updateLoteDto: UpdateLoteDto) {
+    return this.loteService.update(id, updateLoteDto);
   }
 
   @Delete(':id')

@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class LoteService {
+  
   constructor(
 
     @InjectRepository(Lote)
