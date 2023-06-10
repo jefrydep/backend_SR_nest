@@ -95,7 +95,7 @@ export class AuthService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.userRepository.preload({
       id: id,
-      password:updateUserDto.password?bcrypt.hashSync(updateUserDto.password,10):undefined,
+      // password:updateUserDto.password?bcrypt.hashSync(updateUserDto.password,10):undefined,
       ...updateUserDto,
     });
     if (!user) throw new NotFoundException(`Client with id: ${id} not found`);

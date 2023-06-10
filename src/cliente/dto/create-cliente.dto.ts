@@ -17,7 +17,7 @@ export class CreateClienteDto {
 
   @IsString()
   @IsOptional()
-  cellPhone?: string;
+  cellNumber?: string;
   
    @IsIn(['Masculino','Femenino','Unisex'])
   gender: string;
@@ -34,4 +34,7 @@ export class CreateClienteDto {
 
   @IsString()
   distrit: string;
+
+  @IsString()
+  country:string;
 }

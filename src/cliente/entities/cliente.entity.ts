@@ -11,18 +11,20 @@ export class Cliente {
   @Column('text')
   age: string;
 
-  @Column('text')
+  @Column('text',{
+    unique:true
+  })
   dni: string;
 
-  @Column('text', {
-    default: 'No tiene ruc',
-  })
-  ruc?: string;
+  // @Column('text', {
+  //   default: 'No tiene ruc',
+  // })
+  // ruc?: string;
 
   @Column('text', {
     default: 'Sin Numero',
   })
-  cellPhone?: string;
+  cellNumber?: string;
 
   @Column('text')
   gender: string;
@@ -40,6 +42,9 @@ export class Cliente {
 
   @Column('text')
   distrit: string;
+
+  @Column('text')
+  country:string
 
   // @Column('text')
   // idLote:string;

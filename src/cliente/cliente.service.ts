@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -8,6 +9,7 @@ import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cliente } from './entities/cliente.entity';
 import { Repository } from 'typeorm';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class ClienteService {
@@ -24,18 +26,30 @@ export class ClienteService {
 
       return cliente;
     } catch (error) {
-      throw new InternalServerErrorException('ayuda');
+       this.handleDbErrors(error)
     }
   }
 
-  findAll() {
-    return this.clienteRepository.find({});
+  findAll(paginationDto:PaginationDto) {
+    const {limit= 0,offset= 0}= paginationDto;
+    return this.clienteRepository.find({
+      take:limit,
+      skip:offset,
+      //TODO: RELACIONES
+    })
+    
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cliente`;
+  async findOne(id: string  ) {
+     const cliente  = await this.clienteRepository.findOneBy({id});
+     if(!cliente) throw new NotFoundException(`Client with ${id} not found`);
+     return cliente;
   }
-
+  private handleDbErrors(error: any): never {
+    if (error.code === '23505') throw new BadRequestException(error.detail);
+    console.log(error);
+    throw new InternalServerErrorException('please check server logs');
+  }
   async update(id: string, updateClienteDto: UpdateClienteDto) {
     const cliente = await this.clienteRepository.preload({
       id: id,
@@ -48,7 +62,8 @@ export class ClienteService {
     return cliente;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cliente`;
+  async remove(id: string) {
+     const client = await this.findOne(id);
+     await this.clienteRepository.remove(client);
   }
 }

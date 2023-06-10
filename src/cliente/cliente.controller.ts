@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query } from '@nestjs/common';
 import { ClienteService } from './cliente.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
+import { query } from 'express';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('cliente')
 export class ClienteController {
@@ -13,13 +15,13 @@ export class ClienteController {
   }
 
   @Get('findAll')
-  findAll() {
-    return this.clienteService.findAll();
+  findAll(@Query()paginationDto:PaginationDto) {
+    return this.clienteService.findAll(paginationDto)
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.clienteService.findOne(+id);
+  findOne(@Param('id',ParseUUIDPipe) id: string) {
+    return this.clienteService.findOne(id);
   }
 
   @Patch(':id')
@@ -28,7 +30,7 @@ export class ClienteController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clienteService.remove(+id);
+  remove(@Param('id',ParseUUIDPipe) id: string) {
+    return this.clienteService.remove(id);
   }
 }
