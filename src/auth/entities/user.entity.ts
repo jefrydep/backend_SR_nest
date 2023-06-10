@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -28,6 +29,14 @@ export class User {
     default: ['user'],
   })
   role: string[];
+
+  @OneToMany(
+    ()=> Cliente,
+    (client) => client.user,
+    {cascade:true}
+  )
+  client?: Cliente
+
 
 //   @Column('time', {})
 //   createdAt: Date;

@@ -1,5 +1,6 @@
 import { IsOptional } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/auth/entities/user.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Cliente {
   @PrimaryGeneratedColumn('uuid')
@@ -46,6 +47,11 @@ export class Cliente {
   @Column('text')
   country:string
 
+  @ManyToOne(
+    ()=>User,
+    (user)=> user.client
+  )
+  user:User
   // @Column('text')
   // idLote:string;
 
