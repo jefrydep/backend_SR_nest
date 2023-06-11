@@ -49,7 +49,9 @@ export class Cliente {
 
   @ManyToOne(
     ()=>User,
-    (user)=> user.client
+    (user)=> user.clients,
+    {eager:true}// esto es para que cargue atuomaticamnte la relacion de usuario cliente
+    
   )
   user:User
   // @Column('text')

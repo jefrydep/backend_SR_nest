@@ -16,20 +16,25 @@ import { JwtService } from '@nestjs/jwt';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { UpdateClienteDto } from 'src/cliente/dto/update-cliente.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    // @InjectRepository(Cliente)
+    // private readonly clienteRespository: Repository<Cliente>,
+
     private readonly jwtService: JwtService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
     try {
-      const { password, ...userData } = createUserDto;
+      const { password,  ...userData } = createUserDto;
       const user = this.userRepository.create({
         ...userData,
+        // clients:[],
         password: bcrypt.hashSync(password, 10),
       });
       await this.userRepository.save(user);
@@ -97,6 +102,7 @@ export class AuthService {
       id: id,
       // password:updateUserDto.password?bcrypt.hashSync(updateUserDto.password,10):undefined,
       ...updateUserDto,
+      // clients:[],
     });
     if (!user) throw new NotFoundException(`Client with id: ${id} not found`);
     await this.userRepository.save(user);

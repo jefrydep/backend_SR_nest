@@ -35,7 +35,7 @@ export class User {
     (client) => client.user,
     {cascade:true}
   )
-  client?: Cliente
+  clients?: Cliente [];
 
 
 //   @Column('time', {})

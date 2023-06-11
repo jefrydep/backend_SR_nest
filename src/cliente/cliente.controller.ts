@@ -4,14 +4,21 @@ import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { query } from 'express';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { GetUser } from 'src/auth/decorators';
+import { User } from 'src/auth/entities/user.entity';
+import { Auth } from 'src/auth/decorators/auth-decorator';
+import { validRoles } from 'src/auth/interfaces/valid-roles';
 
 @Controller('cliente')
 export class ClienteController {
   constructor(private readonly clienteService: ClienteService) {}
 
   @Post('register')
-  create(@Body() createClienteDto: CreateClienteDto) {
-    return this.clienteService.create(createClienteDto);
+  @Auth(validRoles.user)
+  create(@Body() createClienteDto: CreateClienteDto,
+  @GetUser() user:User,
+  ) {
+    return this.clienteService.create(createClienteDto,user);
   }
 
   @Get('findAll')
