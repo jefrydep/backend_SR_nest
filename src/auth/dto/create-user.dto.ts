@@ -1,4 +1,4 @@
-import { IsArray, IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { IsArray, IsObject, IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -18,11 +18,7 @@ export class CreateUserDto {
       'The password must have a Uppercase, lowercase letter and a number',
   })
   password: string;
-
-  // @IsString({each:true})
-  // @IsArray()
-  // @IsOptional()
-  // clients?:string[];
+ 
 
 
 }

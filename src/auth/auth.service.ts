@@ -23,26 +23,28 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    // @InjectRepository(Cliente)
-    // private readonly clienteRespository: Repository<Cliente>,
+     
 
     private readonly jwtService: JwtService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
     try {
-      const { password,  ...userData } = createUserDto;
+      const { password, ...userData } = createUserDto;
       const user = this.userRepository.create({
         ...userData,
-        // clients:[],
+
         password: bcrypt.hashSync(password, 10),
+        
       });
+
       await this.userRepository.save(user);
       // momentaniamente elimanos la contraseña porque no queremos mostrarlo
       // delete user.password;
       return {
         ...user,
         token: this.getJwtToken({ id: user.id }),
+     
       };
     } catch (error) {
       this.handleDbErrors(error);
@@ -99,14 +101,14 @@ export class AuthService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.userRepository.preload({
-      id: id,
-      // password:updateUserDto.password?bcrypt.hashSync(updateUserDto.password,10):undefined,
-      ...updateUserDto,
-      // clients:[],
+      // id: id,
+      // // password:updateUserDto.password?bcrypt.hashSync(updateUserDto.password,10):undefined,
+      // ...updateUserDto,
+      // // clients:[],
     });
     if (!user) throw new NotFoundException(`Client with id: ${id} not found`);
     await this.userRepository.save(user);
-    console.log(user)
+    console.log(user);
     // id: id,
     // password: updateUserDto.newPassword ? bcrypt.hashSync(updateUserDto.newPassword, 10) : undefined,
     // // Otros campos que deseas actualizar

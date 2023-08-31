@@ -30,12 +30,12 @@ export class User {
   })
   role: string[];
 
-  @OneToMany(
-    ()=> Cliente,
-    (client) => client.user,
-    {cascade:true}
-  )
-  clients?: Cliente [];
+  // @OneToMany(
+  //   ()=> Cliente,
+  //   (client) => client.user,
+  //   {cascade:true}
+  // )
+  // clients?: Cliente[];
 
 
 //   @Column('time', {})

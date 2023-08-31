@@ -47,13 +47,13 @@ export class Cliente {
   @Column('text')
   country:string
 
-  @ManyToOne(
-    ()=>User,
-    (user)=> user.clients,
-    {eager:true}// esto es para que cargue atuomaticamnte la relacion de usuario cliente
+  // @ManyToOne(
+  //   ()=>User,
+  //   (user)=> user.clients,
+  //   {eager:true}// esto es para que cargue atuomaticamnte la relacion de usuario cliente
     
-  )
-  user:User
+  // )
+  // user:User
   // @Column('text')
   // idLote:string;
 

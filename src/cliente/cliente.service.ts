@@ -24,7 +24,6 @@ export class ClienteService {
       const { ...clienteDetails } = createClienteDto;
       const cliente = this.clienteRepository.create({
         ...clienteDetails,
-        user,
       });
 
       await this.clienteRepository.save(cliente);
