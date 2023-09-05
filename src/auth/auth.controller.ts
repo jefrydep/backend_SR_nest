@@ -37,7 +37,9 @@ export class AuthController {
   testingPrivateRoute() {
     return 'hello world';
   }
+
   @Get()
+  @Auth(validRoles.admin)
   findAll(@Query() paginationDto: PaginationDto) {
     return this.authService.findAll(paginationDto);
   }

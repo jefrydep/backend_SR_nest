@@ -56,7 +56,9 @@ export class ClienteService {
   async update(id: string, updateClienteDto: UpdateClienteDto) {
     const cliente = await this.clienteRepository.preload({
       id: id,
+      
       ...updateClienteDto,
+      
     });
     if (!cliente)
       throw new NotFoundException(`Client with id: ${id} not found`);
