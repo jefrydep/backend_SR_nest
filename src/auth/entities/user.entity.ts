@@ -11,8 +11,17 @@ export class User {
   })
   documentNumber: string;
 
-  @Column('text',{
-    select:true
+  @Column('text')
+  address: string;
+  
+  @Column('text')
+  phoneNumber: string;
+
+  @Column('text')
+  email: string;
+
+  @Column('text', {
+    select: true,
   })
   password: string;
 
@@ -37,9 +46,8 @@ export class User {
   // )
   // clients?: Cliente[];
 
-
-//   @Column('time', {})
-//   createdAt: Date;
+  //   @Column('time', {})
+  //   createdAt: Date;
 
   // @Column('time')
   // updatedAt:Date;

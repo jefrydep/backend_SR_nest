@@ -52,7 +52,17 @@ export class AuthService {
     const { password, documentNumber } = loginUserDto;
     const user = await this.userRepository.findOne({
       where: { documentNumber },
-      select: { documentNumber: true, password: true, id: true, name: true ,role:true},
+      select: {
+        address: true,
+        email: true,
+        phoneNumber: true,
+        documentNumber: true,
+        password: true,
+        id: true,
+        name: true,
+        role: true,
+        
+      },
     });
     if (!user)
       throw new UnauthorizedException(
