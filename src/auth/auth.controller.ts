@@ -9,6 +9,7 @@ import {
   UseGuards,
   ParseUUIDPipe,
   Query,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from './dto/';
@@ -57,5 +58,17 @@ export class AuthController {
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.authService.remove(id);
+  }
+  @Get("pdf/donwload")
+  async downloadPDF(@Res() res): Promise<void> {
+    const buffer = await this.authService.generarPdf();
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=example.pdf',
+      'Content-Length': buffer.length,
+    })
+
+    res.end(buffer);
   }
 }
