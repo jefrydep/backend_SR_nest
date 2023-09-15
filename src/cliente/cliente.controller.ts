@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query, Res } from '@nestjs/common';
 import { ClienteService } from './cliente.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
@@ -39,5 +39,19 @@ export class ClienteController {
   @Delete(':id')
   remove(@Param('id',ParseUUIDPipe) id: string) {
     return this.clienteService.remove(id);
+  }
+
+
+  @Get("pdf/donwload")
+  async downloadPDF(@Res() res): Promise<void> {
+    const buffer = await this.clienteService.generarPdfClientes();
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=example.pdf',
+      'Content-Length': buffer.length,
+    })
+
+    res.end(buffer);
   }
 }

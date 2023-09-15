@@ -126,20 +126,55 @@ export class AuthService {
   }
 
   async generarPdf(): Promise<Buffer> {
-    const pdfBuffer: Buffer = await new Promise((resolve) => {
+    const pdfBuffer: Buffer = await new Promise((resolvePromise) => {
       const doc = new PDFDocument({
-        size:"LETTER",
-        bufferPages:true
+        size: 'LETTER',
       });
-      doc.text("pdg generado dese nuesto bakend")
+      //encabezado de pagin
 
+      // Encabezado de página (JefryDeveloper)
+      doc.registerFont('Helvetica-Bold', 'Helvetica-Bold');
+      doc
+        .font('Helvetica-Bold')
+        .fontSize(10)
+        .text('JefryDeveloper', 50, 10, { align: 'left' });
 
-      const buffer = []
-      doc.on("data",buffer.push.bind(buffer))
-      doc.on("end",()=>{
-        const data = Buffer.concat(buffer)
-        resolve(data)
-      })
+      // Encabezado
+      doc.fontSize(16).text('Lista de Usuarios', { align: 'center' });
+      doc.moveDown(); // Espacio después del título
+
+      // Crear la tabla de usuarios
+      const usersData = [
+        ['Nombre', 'Apellido', 'Peso', 'Talla'],
+        // Aquí puedes rellenar los datos de los usuarios
+        ['Usuario 1', 'Apellido 1', '70 kg', '175 cm'],
+        ['Usuario 2', 'Apellido 2', '65 kg', '170 cm'],
+        // Agrega datos para los otros usuarios aquí
+      ];
+
+      doc.table({
+        headers: usersData[0],
+        rows: usersData.slice(1),
+        width: { min: 50, max: 150 },
+        align: ['left', 'left', 'left', 'left'],
+        padding: 5,
+        margin: { top: 15 },
+      });
+      // Agrega más páginas aquí
+      for (let i = 1; i <= 3; i++) {
+        doc.addPage();
+        doc.fontSize(16).text(`Página ${i + 1}`, { align: 'center' });
+        doc.moveDown(); // Espacio después del título de la página
+
+        // Aquí puedes agregar contenido adicional en cada página adicional
+      }
+      const buffer = [];
+      doc.on('data', (data) => buffer.push(data));
+      doc.on('end', () => {
+        const data = Buffer.concat(buffer);
+        resolvePromise(data);
+      });
+
       doc.end();
     });
     return pdfBuffer;
