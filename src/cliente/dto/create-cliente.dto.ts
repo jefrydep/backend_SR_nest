@@ -1,4 +1,11 @@
-import { MinLength, IsString, isString, IsOptional, IsDate, IsIn } from 'class-validator';
+import {
+  MinLength,
+  IsString,
+  isString,
+  IsOptional,
+  IsDate,
+  IsIn,
+} from 'class-validator';
 
 export class CreateClienteDto {
   @IsString()
@@ -6,8 +13,8 @@ export class CreateClienteDto {
   fullName: string;
 
   @IsString()
-  age: string;
- 
+  birthdayDate: string;
+
   @IsString()
   dni: string;
 
@@ -18,10 +25,10 @@ export class CreateClienteDto {
   @IsString()
   @IsOptional()
   cellNumber?: string;
-  
-   @IsIn(['Masculino','Femenino','Unisex'])
+
+  @IsIn(['Masculino', 'Femenino', 'Unisex'])
   gender: string;
-  
+
   @IsString()
   @IsOptional()
   address?: string;
@@ -36,5 +43,36 @@ export class CreateClienteDto {
   distrit: string;
 
   @IsString()
-  country:string;
+  country: string;
+
+  @IsString()
+  maritalStatus: string;
+
+  @IsString()
+  @IsOptional()
+  beneficiary: string;
+
+  @IsString()
+  @IsOptional()
+  observations: string;
+
+  @IsString()
+  @IsOptional()
+  nameSpouse: string;
+
+  @IsString()
+  @IsOptional()
+  dniSpouse: string;
+
+  @IsString()
+  @IsOptional()
+  genderSpouse: string;
+
+  @IsString()
+  @IsOptional()
+  cellNumberSpouse: string;
+
+  @IsString()
+  @IsOptional()
+  birthdayDateSpouse: string;
 }

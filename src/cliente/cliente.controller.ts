@@ -14,7 +14,7 @@ export class ClienteController {
   constructor(private readonly clienteService: ClienteService) {}
 
   @Post('register')
-  @Auth(validRoles.user)
+  @Auth(validRoles.user,validRoles.admin)
   create(@Body() createClienteDto: CreateClienteDto,
   @GetUser() user:User,
   ) {
@@ -32,8 +32,11 @@ export class ClienteController {
   }
 
   @Patch(':id')
-  update(@Param('id',ParseUUIDPipe) id: string, @Body() updateClienteDto: UpdateClienteDto) {
-    return this.clienteService.update(id, updateClienteDto);
+  @Auth(validRoles.user,validRoles.admin)
+  update(@Param('id',ParseUUIDPipe) id: string, @Body() updateClienteDto: UpdateClienteDto,
+  @GetUser() user:User,
+  ) {
+    return this.clienteService.update(id, updateClienteDto,user);
   }
 
   @Delete(':id')

@@ -39,6 +39,7 @@ export class ClienteService {
       const { id } = user;
       const cliente = this.clienteRepository.create({
         ...clienteDetails,
+        user,
       });
 
       await this.clienteRepository.save({ ...cliente, idUser: id });
@@ -71,7 +72,7 @@ export class ClienteService {
     console.log(error);
     throw new InternalServerErrorException('please check server logs');
   }
-  async update(id: string, updateClienteDto: UpdateClienteDto) {
+  async update(id: string, updateClienteDto: UpdateClienteDto, user: User) {
     const cliente = await this.clienteRepository.preload({
       id: id,
 
@@ -79,6 +80,7 @@ export class ClienteService {
     });
     if (!cliente)
       throw new NotFoundException(`Client with id: ${id} not found`);
+    cliente.user = user;
     await this.clienteRepository.save(cliente);
 
     return cliente;

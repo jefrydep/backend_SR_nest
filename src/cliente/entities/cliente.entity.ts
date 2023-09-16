@@ -10,17 +10,20 @@ export class Cliente {
   fullName: string;
 
   @Column('text')
-  age: string;
+  birthdayDate: string;
 
-  @Column('text',{
-    unique:true
+  @Column('text', {
+    unique: true,
   })
   dni: string;
 
-  // @Column('text', {
-  //   default: 'No tiene ruc',
-  // })
-  // ruc?: string;
+  @Column('text',{
+    default:''
+  })
+  ruc?: string;
+
+  @Column('text')
+  maritalStatus: string;
 
   @Column('text', {
     default: 'Sin Numero',
@@ -30,8 +33,8 @@ export class Cliente {
   @Column('text')
   gender: string;
 
-  @Column('text',{
-    default:"Desconose"
+  @Column('text', {
+    default: 'Desconose',
   })
   address?: string;
 
@@ -45,15 +48,54 @@ export class Cliente {
   distrit: string;
 
   @Column('text')
-  country:string
+  country: string;
 
-  // @ManyToOne(
-  //   ()=>User,
-  //   (user)=> user.clients,
-  //   {eager:true}// esto es para que cargue atuomaticamnte la relacion de usuario cliente
-    
-  // )
-  // user:User
+  @Column('text',{
+    default:""
+  })
+  beneficiary?: string;
+
+  @Column('text',{
+    default:""
+  })
+  observations?: string;
+
+  @Column('text',{
+    default:""
+  })
+  nameSpouse?: string;
+
+  @Column('text',{
+    default:""
+  })
+  dniSpouse?: string;
+
+  @Column('text',{
+    default:""
+  })
+  genderSpouse?: string;
+
+  @Column('text',{
+    default:""
+  })
+  cellNumberSpouse?: string;
+
+  @Column('text',{
+    default:""
+  })
+  emailSpouse?: string;
+  @Column('text',{
+    default:""
+  })
+  birthdayDateSpouse: string;
+
+  @ManyToOne(
+    () => User,
+    (user) => user.clients,
+    { eager: true }, // esto es para que cargue atuomaticamnte la relacion de usuario cliente
+  )
+  user: User;
+
   // @Column('text')
   // idLote:string;
 
