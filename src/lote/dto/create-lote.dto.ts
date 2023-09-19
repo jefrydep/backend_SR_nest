@@ -1,4 +1,6 @@
-import { IsOptional, IsString, isString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsPositive, IsString, isArray, isObject, isString } from 'class-validator';
+import { Sale } from 'src/venta/entities/venta.entity';
+import { OneToOne } from 'typeorm';
 
 export class CreateLoteDto {
   @IsString()
@@ -10,13 +12,21 @@ export class CreateLoteDto {
   @IsString()
   aream2: string;
 
-  @IsString()
-  price: string;
+  @IsNumber()
+  @IsPositive()
+  price: number;
+
+  @IsNumber()
+  @IsPositive()
+  cost: number;
+ 
 
   @IsString()
   location: string;
 
+  
   @IsString()
-  @IsOptional()
-  partidNumber?: string;
+  // @IsOptional()
+  partidNumber: string;
+
 }

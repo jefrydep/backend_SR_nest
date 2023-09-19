@@ -1,7 +1,14 @@
 import { IsOptional } from 'class-validator';
 import { User } from 'src/auth/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-@Entity()
+import { Sale } from 'src/venta/entities/venta.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+@Entity("")
 export class Cliente {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -17,8 +24,8 @@ export class Cliente {
   })
   dni: string;
 
-  @Column('text',{
-    default:''
+  @Column('text', {
+    default: '',
   })
   ruc?: string;
 
@@ -50,42 +57,42 @@ export class Cliente {
   @Column('text')
   country: string;
 
-  @Column('text',{
-    default:""
+  @Column('text', {
+    default: '',
   })
   beneficiary?: string;
 
-  @Column('text',{
-    default:""
+  @Column('text', {
+    default: '',
   })
   observations?: string;
 
-  @Column('text',{
-    default:""
+  @Column('text', {
+    default: '',
   })
   nameSpouse?: string;
 
-  @Column('text',{
-    default:""
+  @Column('text', {
+    default: '',
   })
   dniSpouse?: string;
 
-  @Column('text',{
-    default:""
+  @Column('text', {
+    default: '',
   })
   genderSpouse?: string;
 
-  @Column('text',{
-    default:""
+  @Column('text', {
+    default: '',
   })
   cellNumberSpouse?: string;
 
-  @Column('text',{
-    default:""
+  @Column('text', {
+    default: '',
   })
   emailSpouse?: string;
-  @Column('text',{
-    default:""
+  @Column('text', {
+    default: '',
   })
   birthdayDateSpouse: string;
 
@@ -95,6 +102,9 @@ export class Cliente {
     { eager: true }, // esto es para que cargue atuomaticamnte la relacion de usuario cliente
   )
   user: User;
+
+  // @OneToMany(() => Sale, (sale) => sale.client)
+  // sales: Sale[];
 
   // @Column('text')
   // idLote:string;

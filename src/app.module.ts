@@ -36,6 +36,7 @@ import { CommonModule } from './common/common.module';
     ProyectoModule,
 
     CommonModule,
+    
   ],
   controllers: [],
   providers: [],

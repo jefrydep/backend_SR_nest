@@ -1,4 +1,5 @@
 import { Cliente } from 'src/cliente/entities/cliente.entity';
+import { Sale } from 'src/venta/entities/venta.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
@@ -46,6 +47,16 @@ export class User {
   )
   clients?: Cliente[];
 
+  // @OneToMany(
+  //   ()=> Sale,
+  //   (sale)=> sale.user,
+  //   {cascade:true}
+
+  // )
+  // sales?:Sale[]
+
+
+  
   //   @Column('time', {})
   //   createdAt: Date;
 

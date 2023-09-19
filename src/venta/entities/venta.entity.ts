@@ -1,36 +1,58 @@
-import { IsOptional } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
+import { User } from 'src/auth/entities/user.entity';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
+import { Lot } from 'src/lote/entities/lote.entity';
+
 @Entity()
-export class Venta {
+export class Sale {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('text')
-  LoteCode: string;
+  saleType: string;
+
+  @Column('date')
+  saleDate: Date;
+
+  @Column('decimal', { precision: 10, scale: 2 })
+  amount: number;
 
   @Column('text')
-   areaM2:string;
+  obserbations: string;
 
-  @Column('text')
-   userId:string;
+  // @Column('text')
+  // idLote: string;
 
-  @Column('text')
-   manzanaId:string;
+  // @Column('text')
+  // idClient: string;
 
-  @Column('text')
-   proyectoId:string;
+  // @ManyToOne(() => User, (user) => user.sales, { eager: true,  })
+  // user: User;
 
+  // @ManyToOne(() => Cliente, (client) => client.sales, {
+  //   eager: true,
+  //   nullable: false,
+  // })
+  // @JoinColumn()
+  // client: Cliente;
+  // @ManyToOne(() => Cliente, { eager: true }) // Relación con Cliente
+  // @JoinColumn({ name: 'cliente_id' }) // Nombre de la columna en la tabla
+  // cliente: Cliente;
+
+  // @OneToOne(() => Lot, (lot) => lot.sale, {  })
+  // @JoinColumn()
+  // lot: Lot;
+  
    
+  @OneToOne(() => Lot, { eager: true })
+  @JoinColumn()
+  lote: Lot;
 
- 
-//   @Column('text', {
-//     default: 'No tiene ruc',
-//   })
-//   ruc?: string;
- 
- 
- 
- 
- 
- 
 }

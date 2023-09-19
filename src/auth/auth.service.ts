@@ -64,6 +64,7 @@ export class AuthService {
         name: true,
         role: true,
       },
+     
     });
     if (!user)
       throw new UnauthorizedException(
@@ -125,6 +126,19 @@ export class AuthService {
     await this.userRepository.remove(user);
   }
 
+async findOneWithClients(id: string) {
+  const user = await this.userRepository
+    .createQueryBuilder("user")
+    .leftJoinAndSelect("user.clients", "clients")
+    .where("user.id = :id", { id })
+    .getOne();
+
+  if (!user) {
+    throw new NotFoundException(`User with ID ${id} not found`);
+  }
+
+  return user;
+}
   async generarPdf(): Promise<Buffer> {
     const pdfBuffer: Buffer = await new Promise((resolvePromise) => {
       const doc = new PDFDocument({

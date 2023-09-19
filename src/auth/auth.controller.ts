@@ -59,6 +59,12 @@ export class AuthController {
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.authService.remove(id);
   }
+  @Get(':id/with-clients')
+  async findOneWithClients(@Param('id') id: string) {
+    const user = await this.authService.findOneWithClients(id);
+    return user;
+  }
+
   @Get("pdf/donwload")
   async downloadPDF(@Res() res): Promise<void> {
     const buffer = await this.authService.generarPdf();

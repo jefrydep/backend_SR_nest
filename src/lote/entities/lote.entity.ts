@@ -1,7 +1,8 @@
 import { IsOptional } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Sale } from 'src/venta/entities/venta.entity';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
-export class Lote {
+export class Lot {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -16,15 +17,23 @@ export class Lote {
   @Column('text')
    aream2:string;
 
-   @Column('text')
-   price:string;
+   @Column('decimal', { precision: 10, scale: 2 }) // Ejemplo de definición de columna para el importe (decimal con precisión y escala)
+   price: number;
 
+   @Column('decimal', { precision: 10, scale: 2 }) // Ejemplo de definición de columna para el importe (decimal con precisión y escala)
+   cost: number;
+  
    @Column('text')
    location:string;
 
    @Column('text')
-   partidNumber?:string
+   partidNumber:string
 
+   
+  //  @OneToOne(() => Sale, sale => sale.lot)
+  //  sale: Sale;
+
+  //  @OneToOne()
   // @Column('text')
   //  userId:string;
 
@@ -34,7 +43,6 @@ export class Lote {
   // @Column('text')
   //  proyectoId:string;
 
-   
 
  
 //   @Column('text', {

@@ -1,15 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { VentaService } from './venta.service';
 import { CreateVentaDto } from './dto/create-venta.dto';
 import { UpdateVentaDto } from './dto/update-venta.dto';
+import { validRoles } from 'src/auth/interfaces/valid-roles';
+import { Auth } from 'src/auth/decorators/auth-decorator';
+import { GetUser } from 'src/auth/decorators';
+import { User } from 'src/auth/entities/user.entity';
 
 @Controller('venta')
 export class VentaController {
   constructor(private readonly ventaService: VentaService) {}
 
-  @Post('register')
-  create(@Body() createVentaDto: CreateVentaDto) {
-    return this.ventaService.create(createVentaDto);
+  @Post('register/:id/lote')
+  @Auth(validRoles.user, validRoles.admin)
+  create(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() createVentaDto: CreateVentaDto,
+    @GetUser() user: User,
+  ) {
+    return this.ventaService.create(id, createVentaDto);
   }
 
   @Get('findAll')
@@ -23,7 +41,10 @@ export class VentaController {
   }
 
   @Patch(':id')
-  update(@Param('id',ParseUUIDPipe) id: string, @Body() updateVentaDto: UpdateVentaDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateVentaDto: UpdateVentaDto,
+  ) {
     return this.ventaService.update(id, updateVentaDto);
   }
 

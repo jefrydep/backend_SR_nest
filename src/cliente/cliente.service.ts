@@ -36,13 +36,13 @@ export class ClienteService {
   async create(createClienteDto: CreateClienteDto, user: User) {
     try {
       const { ...clienteDetails } = createClienteDto;
-      const { id } = user;
+
       const cliente = this.clienteRepository.create({
         ...clienteDetails,
         user,
       });
 
-      await this.clienteRepository.save({ ...cliente, idUser: id });
+      await this.clienteRepository.save(cliente);
 
       return {
         ...cliente,
