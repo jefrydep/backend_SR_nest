@@ -25,11 +25,11 @@ export class VentaService {
     @InjectRepository(Lot)
     private readonly lotRespository: Repository<Lot>,
   ) {}
-  async create(id: string, createVentaDto: CreateVentaDto) {
+  async create(id: string, createVentaDto: CreateVentaDto, user: User) {
     try {
-      const { ...saleDetails } = createVentaDto;
+      const { clientId, ...saleDetails } = createVentaDto;
       // const lote = await this.lotRespository.findOneBy({ id: lot });
-      // const clients = await this.lotRespository.findOneBy({ id: client });
+      const clientFound = await this.clientRespository.findOneBy({id:clientId});
 
       // if (!lote) {
       //   throw new NotFoundException(`Lote with ID ${idLote} not found`);
@@ -42,7 +42,7 @@ export class VentaService {
       //   where: { id: idClient },
       // });
       if (!lotfound) {
-        return new HttpException('user not foun ', HttpStatus.NOT_FOUND);
+        return new HttpException('user not found', HttpStatus.NOT_FOUND);
       }
       // Crea la venta con las relaciones client y lot
       // const clientfoun = await this.clientRespository.findOneBy({ id: client });
@@ -50,6 +50,9 @@ export class VentaService {
       const newSale = this.ventaRepository.create({
         ...saleDetails,
         lote: lotfound,
+        user,
+        client: clientFound,
+
         // Asigna el lote encontrado a la venta
       });
 

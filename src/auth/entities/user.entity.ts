@@ -47,6 +47,14 @@ export class User {
   )
   clients?: Cliente[];
 
+  
+  @OneToMany(
+    ()=> Cliente,
+    (client) => client.user,
+    {cascade:true}
+  )
+  sale?: Sale[];
+
   // @OneToMany(
   //   ()=> Sale,
   //   (sale)=> sale.user,

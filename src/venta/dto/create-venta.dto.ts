@@ -35,6 +35,10 @@ export class CreateVentaDto {
   @IsString()
   obserbations: string;
 
+
+
+  @IsString()
+  clientId:string
   // @IsString()
   // idLote: string;
 

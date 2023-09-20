@@ -27,6 +27,18 @@ export class Sale {
   @Column('text')
   obserbations: string;
 
+  @ManyToOne(
+    () => User,
+    (user) => user.clients,
+    { eager: true }, // esto es para que cargue atuomaticamnte la relacion de usuario cliente
+  )
+  user: User;
+
+  @Column()
+   clientId:string
+
+  @ManyToOne(() => Cliente, (client) => client.sale)
+  client: Cliente;
   // @Column('text')
   // idLote: string;
 
@@ -49,10 +61,8 @@ export class Sale {
   // @OneToOne(() => Lot, (lot) => lot.sale, {  })
   // @JoinColumn()
   // lot: Lot;
-  
-   
+
   @OneToOne(() => Lot, { eager: true })
   @JoinColumn()
   lote: Lot;
-
 }

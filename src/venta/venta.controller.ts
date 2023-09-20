@@ -27,7 +27,7 @@ export class VentaController {
     @Body() createVentaDto: CreateVentaDto,
     @GetUser() user: User,
   ) {
-    return this.ventaService.create(id, createVentaDto);
+    return this.ventaService.create(id, createVentaDto,user);
   }
 
   @Get('findAll')

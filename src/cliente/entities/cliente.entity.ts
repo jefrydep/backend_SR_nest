@@ -103,7 +103,10 @@ export class Cliente {
   )
   user: User;
 
-  // @OneToMany(() => Sale, (sale) => sale.client)
+  @OneToMany(() => Sale, (sale) => sale.client)
+  sale: Sale[];
+
+  // @OneToMany(() => Sale)
   // sales: Sale[];
 
   // @Column('text')
