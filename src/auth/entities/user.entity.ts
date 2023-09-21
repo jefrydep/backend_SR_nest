@@ -49,8 +49,8 @@ export class User {
 
   
   @OneToMany(
-    ()=> Cliente,
-    (client) => client.user,
+    ()=> Sale,
+    (sale) => sale.user,
     {cascade:true}
   )
   sale?: Sale[];

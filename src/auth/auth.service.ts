@@ -101,7 +101,14 @@ export class AuthService {
   }
 
   async findOne(id: string) {
-    const user = await this.userRepository.findOneBy({ id });
+    const user = await this.userRepository.findOne({
+      where:{
+        id,
+         
+      },
+      relations:["clients","sale"]
+      
+    });
 
     if (!user) throw new NotFoundException(`user with ${id} not found`);
 
@@ -140,7 +147,7 @@ async findOneWithClients(id: string) {
   return user;
 }
   async generarPdf(): Promise<Buffer> {
-    const pdfBuffer: Buffer = await new Promise((resolvePromise) => {
+    const pdfBuffer: Buffer = await new Promise(async (resolvePromise) => {
       const doc = new PDFDocument({
         size: 'LETTER',
       });
@@ -158,14 +165,38 @@ async findOneWithClients(id: string) {
       doc.moveDown(); // Espacio después del título
 
       // Crear la tabla de usuarios
-      const usersData = [
+      // this.userRepository
+      // .find()
+      // .then((users) => {
+      //   const usersData = [
+      //     ['Nombre', 'Apellido', 'Peso', 'Talla'],
+      //     // Aquí puedes rellenar los datos de los usuarios
+      //     // Usar los datos de los usuarios que obtuviste de la base de datos
+      //     ...users.map((user) => [
+      //       user.name,
+      //       user.documentNumber,
+      //       user.email,
+      //       user.phoneNumber,
+      //       user.address,
+      //       user.sale.length
+
+      //     ]),
+      //   ];
+      const users =   await this.userRepository.find()      // const usersData = [
+      //   ['Nombre', 'Apellido', 'Peso', 'Talla'],
+      //   // Aquí puedes rellenar los datos de los usuarios
+      //   ['Usuario 1', 'Apellido 1', '70 kg', '175 cm'],
+      //   ['Usuario 2', 'Apellido 2', '65 kg', '170 cm'],
+      //   // Agrega datos para los otros usuarios aquí
+      // ];
+      const usersData =  [
         ['Nombre', 'Apellido', 'Peso', 'Talla'],
         // Aquí puedes rellenar los datos de los usuarios
-        ['Usuario 1', 'Apellido 1', '70 kg', '175 cm'],
-        ['Usuario 2', 'Apellido 2', '65 kg', '170 cm'],
-        // Agrega datos para los otros usuarios aquí
+        ...users.map((user) => [
+          user.name,
+         
+        ]),
       ];
-
       doc.table({
         headers: usersData[0],
         rows: usersData.slice(1),
@@ -174,7 +205,8 @@ async findOneWithClients(id: string) {
         padding: 5,
         margin: { top: 15 },
       });
-      // Agrega más páginas aquí
+       
+   
       for (let i = 1; i <= 3; i++) {
         doc.addPage();
         doc.fontSize(16).text(`Página ${i + 1}`, { align: 'center' });
