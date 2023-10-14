@@ -49,16 +49,17 @@ export class AuthController {
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.authService.findOne(id);
   }
-
+  @Auth()
   @Patch(':id')
   update(@Param('id',ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.authService.update(id, updateUserDto);
   }
-
+  @Auth(validRoles.admin)
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.authService.remove(id);
   }
+  
   @Get(':id/with-clients')
   async findOneWithClients(@Param('id') id: string) {
     const user = await this.authService.findOneWithClients(id);

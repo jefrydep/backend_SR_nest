@@ -36,6 +36,7 @@ export class AuthService {
         ...userData,
 
         password: bcrypt.hashSync(password, 10),
+        
       });
 
       await this.userRepository.save(user);
@@ -63,6 +64,7 @@ export class AuthService {
         id: true,
         name: true,
         role: true,
+        isActive:true
       },
      
     });
@@ -70,6 +72,8 @@ export class AuthService {
       throw new UnauthorizedException(
         'Credentials are not valid (documentNumber)',
       );
+
+      
 
     if (!bcrypt.compareSync(password, user.password))
       throw new UnauthorizedException('Credentials are not valid(password)');

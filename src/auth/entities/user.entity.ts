@@ -14,7 +14,7 @@ export class User {
 
   @Column('text')
   address: string;
-  
+
   @Column('text')
   phoneNumber: string;
 
@@ -40,19 +40,15 @@ export class User {
   })
   role: string[];
 
-  @OneToMany(
-    ()=> Cliente,
-    (client) => client.user,
-    {cascade:true}
-  )
+  
+  @Column({ nullable: true }) // Permite valores nulos
+  deleted_at: Date; // Fecha y hora en que se marca como eliminado
+
+
+  @OneToMany(() => Cliente, (client) => client.user, { cascade: false })
   clients?: Cliente[];
 
-  
-  @OneToMany(
-    ()=> Sale,
-    (sale) => sale.user,
-    {cascade:true}
-  )
+  @OneToMany(() => Sale, (sale) => sale.user, { cascade: false })
   sale?: Sale[];
 
   // @OneToMany(
@@ -63,8 +59,6 @@ export class User {
   // )
   // sales?:Sale[]
 
-
-  
   //   @Column('time', {})
   //   createdAt: Date;
 
