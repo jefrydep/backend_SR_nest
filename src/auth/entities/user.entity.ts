@@ -28,6 +28,13 @@ export class User {
 
   @Column('text')
   name: string;
+  
+
+  @Column('text')
+  lastName: string;
+
+  @Column('text')
+  idCorporation: string;
 
   @Column('bool', {
     default: true,

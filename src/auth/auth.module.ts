@@ -12,10 +12,10 @@ import { Sale } from 'src/venta/entities/venta.entity';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService,JwtStrategy],
+  providers: [AuthService, JwtStrategy],
   imports: [
     ConfigModule,
-    TypeOrmModule.forFeature([User,Cliente,Sale]),
+    TypeOrmModule.forFeature([User, Cliente, Sale]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -31,7 +31,6 @@ import { Sale } from 'src/venta/entities/venta.entity';
     }),
   ],
 
-  exports: [TypeOrmModule,JwtStrategy,PassportModule,JwtModule],
+  exports: [TypeOrmModule, JwtStrategy, PassportModule, JwtModule],
 })
 export class AuthModule {}
- 
