@@ -1,6 +1,7 @@
 import { Cliente } from 'src/cliente/entities/cliente.entity';
+import { Corporation } from 'src/corporation/entities/corporation.entity';
 import { Sale } from 'src/venta/entities/venta.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -33,8 +34,8 @@ export class User {
   @Column('text')
   lastName: string;
 
-  @Column('text')
-  idCorporation: string;
+  // @Column('text')
+  // idCorporation: string;
 
   @Column('bool', {
     default: true,
@@ -57,6 +58,13 @@ export class User {
 
   @OneToMany(() => Sale, (sale) => sale.user, { cascade: false })
   sale?: Sale[];
+
+  @ManyToOne(
+    () => Corporation,
+    (corporation) => corporation.user,
+    { eager: true }, // esto es para que cargue atuomaticamnte la relacion de usuario cliente
+  )
+  corporation: Corporation[];
 
   // @OneToMany(
   //   ()=> Sale,

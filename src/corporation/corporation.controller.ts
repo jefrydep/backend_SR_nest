@@ -7,7 +7,7 @@ import { UpdateCorporationDto } from './dto/update-corporation.dto';
 export class CorporationController {
   constructor(private readonly corporationService: CorporationService) {}
 
-  @Post()
+  @Post("register")
   create(@Body() createCorporationDto: CreateCorporationDto) {
     return this.corporationService.create(createCorporationDto);
   }

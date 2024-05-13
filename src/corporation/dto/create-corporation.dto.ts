@@ -5,18 +5,20 @@ import {
   IsOptional,
   IsDate,
   IsIn,
+  MaxLength,
+  IsEmail,
+  maxLength,
 } from 'class-validator';
 
 export class CreateCorporationDto {
   @IsString()
-  @MinLength(5)
-  fullName: string;
+  @MaxLength(50)
+  name: string;
 
   @IsString()
-  birthdayDate: string;
-
-  @IsString()
-  dni: string;
+  @MaxLength(50)
+  @IsOptional()
+  fullDescription?: string;
 
   @IsString()
   @IsOptional()
@@ -25,9 +27,6 @@ export class CreateCorporationDto {
   @IsString()
   @IsOptional()
   cellNumber?: string;
-
-  @IsIn(['Masculino', 'Femenino', 'Unisex'])
-  gender: string;
 
   @IsString()
   @IsOptional()
@@ -40,39 +39,20 @@ export class CreateCorporationDto {
   province: string;
 
   @IsString()
-  distrit: string;
-
-  @IsString()
   country: string;
 
+  @IsEmail()
   @IsString()
-  maritalStatus: string;
+  email: string;
+
+  @MaxLength(50)
+  @IsString()
+  webSite: string;
+
+  @MaxLength(20)
+  @IsString()
+  manager: string;
 
   @IsString()
-  @IsOptional()
-  beneficiary: string;
-
-  @IsString()
-  @IsOptional()
-  observations: string;
-
-  @IsString()
-  @IsOptional()
-  nameSpouse: string;
-
-  @IsString()
-  @IsOptional()
-  dniSpouse: string;
-
-  @IsString()
-  @IsOptional()
-  genderSpouse: string;
-
-  @IsString()
-  @IsOptional()
-  cellNumberSpouse: string;
-
-  @IsString()
-  @IsOptional()
-  birthdayDateSpouse: string;
+  logo: string;
 }

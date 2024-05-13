@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/auth/entities/user.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Corporation {
   @PrimaryGeneratedColumn('uuid')
@@ -29,11 +30,19 @@ export class Corporation {
   country: string;
 
   @Column('text')
-  city: string;
+  department: string;
 
   @Column('text')
-  manager:string
+  province: string;
 
+  @Column('text')
+  logo: string;
 
-//   users
+  @Column('text')
+  manager: string;
+
+  //   users
+  
+  @OneToMany(() => User, (user) => user.corporation, { cascade: false })
+  user?: User[];
 }
