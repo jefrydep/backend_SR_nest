@@ -1,7 +1,6 @@
 import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
 export class LoginUserDto {
- 
   @IsString()
   @MinLength(8)
   @MaxLength(8)
@@ -15,4 +14,7 @@ export class LoginUserDto {
       'The password must have a Uppercase, lowercase letter and a number',
   })
   password: string;
+
+  @IsString()
+  idCorporation: string;
 }

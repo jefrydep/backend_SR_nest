@@ -52,9 +52,9 @@ export class AuthService {
   }
 
   async login(loginUserDto: LoginUserDto) {
-    const { password, documentNumber } = loginUserDto;
+    const { password, documentNumber,idCorporation } = loginUserDto;
     const user = await this.userRepository.findOne({
-      where: { documentNumber },
+      where: { documentNumber,idCorporation},
       select: {
         address: true,
         email: true,
@@ -68,6 +68,7 @@ export class AuthService {
       },
      
     });
+    console.log(user)
     if (!user)
       throw new UnauthorizedException(
         'Credentials are not valid (documentNumber)',
