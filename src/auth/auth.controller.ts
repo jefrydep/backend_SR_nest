@@ -40,7 +40,7 @@ export class AuthController {
   }
 
   @Get()
-  @Auth(validRoles.admin)
+  // @Auth(validRoles.user)
   findAll(@Query() paginationDto: PaginationDto) {
     return this.authService.findAll(paginationDto);
   }

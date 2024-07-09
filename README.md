@@ -51,7 +51,7 @@ services:
 ```
 7. instalamos el driver de postgress
 ```
-npm i @nestjs/typeorm typeorm pg
+ 
 ```
 ```js
  TypeOrmModule.forRoot({
