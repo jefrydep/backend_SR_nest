@@ -1,4 +1,4 @@
-import { IsArray, IsNumber, IsOptional, IsPositive, IsString, isArray, isObject, isString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, isArray, isObject, isString } from 'class-validator';
 import { Sale } from 'src/venta/entities/venta.entity';
 import { OneToOne } from 'typeorm';
 
@@ -28,5 +28,10 @@ export class CreateLoteDto {
   @IsString()
   // @IsOptional()
   partidNumber: string;
+
+  
+  @IsNotEmpty()
+  blockId:string
+
 
 }

@@ -9,18 +9,31 @@ import { UpdateLoteDto } from './dto/update-lote.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Lot } from './entities/lote.entity';
 import { Repository } from 'typeorm';
+import { Block } from 'src/block/entities/block.entity';
 
 @Injectable()
 export class LoteService {
   constructor(
     @InjectRepository(Lot)
     private readonly loteRespository: Repository<Lot>,
+    @InjectRepository(Block)
+    private readonly blockRespository: Repository<Block>,
   ) {}
   async create(createLoteDto: CreateLoteDto) {
     try {
       const { ...lotDetails } = createLoteDto;
+      const block = await this.blockRespository.findOne({
+        where: {
+          id: createLoteDto.blockId,
+        },
+      });
+      if (!block) {
+        throw new NotFoundException('Block not found');
+      }
+
       const lote = this.loteRespository.create({
         ...lotDetails,
+        block,
       });
       await this.loteRespository.save(lote);
 

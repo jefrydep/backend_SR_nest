@@ -1,6 +1,7 @@
 import { IsOptional } from 'class-validator';
+import { Block } from 'src/block/entities/block.entity';
 import { Sale } from 'src/venta/entities/venta.entity';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Lot {
   @PrimaryGeneratedColumn('uuid')
@@ -29,7 +30,8 @@ export class Lot {
    @Column('text')
    partidNumber:string
 
-   
+   @ManyToOne(() => Block,(block)=>block.lots)
+   block:Block;
   //  @OneToOne(() => Sale, sale => sale.lot)
   //  sale: Sale;
 

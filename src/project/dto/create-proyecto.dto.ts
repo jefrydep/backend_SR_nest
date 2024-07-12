@@ -1,4 +1,5 @@
-import { IsString, isString } from 'class-validator';
+import { IsOptional, IsString, isString } from 'class-validator';
+import { CreateBlockDto } from 'src/block/dto/create-block.dto';
 
 export class CreateProyectoDto {
   @IsString()
@@ -17,4 +18,9 @@ export class CreateProyectoDto {
 
   @IsString()
   description: string;
+
+
+  @IsOptional()
+  blocks?: CreateBlockDto[];
+
 }

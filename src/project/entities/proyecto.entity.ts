@@ -1,5 +1,6 @@
 import { IsOptional } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Block } from 'src/block/entities/block.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Proyecto {
   @PrimaryGeneratedColumn('uuid')
@@ -28,6 +29,9 @@ export class Proyecto {
 
   @Column('text')
   status: string;
+
+  @OneToMany(() => Block, (block) => block.project, { cascade: true })
+  blocks?: Block[];
 
   //   @Column('text', {
   //     default: 'No tiene ruc',

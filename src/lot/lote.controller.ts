@@ -3,7 +3,7 @@ import { LoteService } from './lote.service';
 import { CreateLoteDto } from './dto/create-lote.dto';
 import { UpdateLoteDto } from './dto/update-lote.dto';
 
-@Controller('lote')
+@Controller('lot')
 export class LoteController {
   constructor(private readonly loteService: LoteService) {}
 

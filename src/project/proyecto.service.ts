@@ -17,12 +17,12 @@ export class ProyectoService {
   async create(createProyectoDto: CreateProyectoDto) {
     const proyecto = this.proyectoRepository.create(createProyectoDto);
     await this.proyectoRepository.save(proyecto);
-    
+    // await proyecto.blocks;
     return proyecto;
   }
 
   findAll() {
-    return this.proyectoRepository.find({});
+    return this.proyectoRepository.find({relations:['blocks']});
   }
 
   findOne(id: number) {

@@ -12,7 +12,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Sale } from './entities/venta.entity';
 import { Repository } from 'typeorm';
 import { Cliente } from 'src/cliente/entities/cliente.entity';
-import { Lot } from 'src/lote/entities/lote.entity';
+import { Lot } from 'src/lot/entities/lote.entity';
 import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()

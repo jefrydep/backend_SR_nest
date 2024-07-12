@@ -3,7 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClienteModule } from './cliente/cliente.module';
-import { LoteModule } from './lote/lote.module';
+import { LoteModule } from './lot/lote.module';
 import { VentaModule } from './venta/venta.module';
 import { CommonModule } from './common/common.module';
 import { CorporationModule } from './corporation/corporation.module';

@@ -3,7 +3,7 @@ import { VentaService } from './venta.service';
 import { VentaController } from './venta.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Sale } from './entities/venta.entity';
-import { Lot } from 'src/lote/entities/lote.entity';
+import { Lot } from 'src/lot/entities/lote.entity';
 import { Cliente } from 'src/cliente/entities/cliente.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { User } from 'src/auth/entities/user.entity';

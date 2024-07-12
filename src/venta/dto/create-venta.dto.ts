@@ -18,7 +18,7 @@ import {
 } from 'class-validator';
 import { User } from 'src/auth/entities/user.entity';
 import { Cliente } from 'src/cliente/entities/cliente.entity';
-import { Lot } from 'src/lote/entities/lote.entity';
+import { Lot } from 'src/lot/entities/lote.entity';
 
 export class CreateVentaDto {
   @IsString()
