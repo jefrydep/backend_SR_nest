@@ -9,28 +9,28 @@ export class Proyecto {
   nameProject: string;
 
   @Column('text')
-   location:string;
+  location: string;
 
   // @Column('text')
   //  userId:string;
 
   @Column('text')
-   aream2:string;
+  aream2: string;
 
   @Column('text')
-   abbrevation:string;
+  description: string;
 
-   
+  // @Column('text')
+  // abbrevation: string;
 
- 
-//   @Column('text', {
-//     default: 'No tiene ruc',
-//   })
-//   ruc?: string;
- 
- 
- 
- 
- 
- 
+  // @Column('text')
+  // address: string;
+
+  @Column('text')
+  status: string;
+
+  //   @Column('text', {
+  //     default: 'No tiene ruc',
+  //   })
+  //   ruc?: string;
 }

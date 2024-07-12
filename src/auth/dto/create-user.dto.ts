@@ -44,5 +44,9 @@ export class CreateUserDto {
     message:
       'The password must have a Uppercase, lowercase letter and a number',
   })
-  password: string;
+  password: string
+
+  
+  // @IsString()
+  // idCorporation: string="1995"
 }

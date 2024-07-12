@@ -5,10 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClienteModule } from './cliente/cliente.module';
 import { LoteModule } from './lote/lote.module';
 import { VentaModule } from './venta/venta.module';
-import { ManzanaModule } from './manzana/manzana.module';
-import { ProyectoModule } from './proyecto/proyecto.module';
 import { CommonModule } from './common/common.module';
 import { CorporationModule } from './corporation/corporation.module';
+import { BlockModule } from './block/block.module';
+import { ProyectoModule } from './project/proyecto.module';
 
 @Module({
   imports: [
@@ -31,15 +31,13 @@ import { CorporationModule } from './corporation/corporation.module';
     LoteModule,
 
     VentaModule,
-
-    ManzanaModule,
+    BlockModule,
 
     ProyectoModule,
 
     CommonModule,
 
     CorporationModule,
-    
   ],
   controllers: [],
   providers: [],

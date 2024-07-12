@@ -53,8 +53,15 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto) {
     const { password, documentNumber,idCorporation } = loginUserDto;
+    const corporationId = "1994palomino"
+    if(idCorporation != corporationId){
+      throw new UnauthorizedException("access not allowed for this corporation")
+    }
+
     const user = await this.userRepository.findOne({
       // where: { documentNumber,idCorporation},
+
+      
       where: { documentNumber},
       select: {
         address: true,
