@@ -16,18 +16,23 @@ import { Auth } from 'src/auth/decorators/auth-decorator';
 import { GetUser } from 'src/auth/decorators';
 import { User } from 'src/auth/entities/user.entity';
 
-@Controller('venta')
+@Controller('sale')
 export class VentaController {
   constructor(private readonly ventaService: VentaService) {}
 
-  @Post('register/:id/lote')
-  @Auth(validRoles.user, validRoles.admin)
-  create(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() createVentaDto: CreateVentaDto,
-    @GetUser() user: User,
-  ) {
-    return this.ventaService.create(id, createVentaDto,user);
+  // @Post('register/:id/lote')
+  // @Auth(validRoles.user, validRoles.admin)
+  // create(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body() createVentaDto: CreateVentaDto,
+  //   @GetUser() user: User,
+  // ) {
+  //   return this.ventaService.create(id, createVentaDto,user);
+  // }
+  
+  @Post('register')
+  create(@Body() createVentaDto: CreateVentaDto) {
+    return this.ventaService.create(createVentaDto);
   }
 
   @Get('findAll')

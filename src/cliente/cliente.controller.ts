@@ -9,7 +9,7 @@ import { User } from 'src/auth/entities/user.entity';
 import { Auth } from 'src/auth/decorators/auth-decorator';
 import { validRoles } from 'src/auth/interfaces/valid-roles';
 
-@Controller('cliente')
+@Controller('client')
 export class ClienteController {
   constructor(private readonly clienteService: ClienteService) {}
 
@@ -20,6 +20,11 @@ export class ClienteController {
   ) {
     return this.clienteService.create(createClienteDto,user);
   }
+  // @Post('register')
+  // create(@Body() createClientDto: CreateClienteDto) {
+  //   return this.clienteService.create(createClientDto);
+  // }
+
 
   @Get('findAll')
   findAll(@Query()paginationDto:PaginationDto) {

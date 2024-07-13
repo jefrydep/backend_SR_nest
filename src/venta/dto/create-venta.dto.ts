@@ -3,6 +3,7 @@ import {
   IsDate,
   IsDateString,
   IsEmail,
+  IsNotEmpty,
   IsNumber,
   IsObject,
   IsOptional,
@@ -12,6 +13,7 @@ import {
   Matches,
   MaxLength,
   MinLength,
+  isNotEmpty,
   isString,
   isUUID,
   minLength,
@@ -35,10 +37,15 @@ export class CreateVentaDto {
   @IsString()
   obserbations: string;
 
-
+  @IsNotEmpty()
+  userId: string;
 
   @IsString()
-  clientId:string
+  clientId: string;
+
+  @IsString()
+  lotId:string;
+
   // @IsString()
   // idLote: string;
 

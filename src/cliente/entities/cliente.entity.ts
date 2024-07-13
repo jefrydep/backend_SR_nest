@@ -104,7 +104,7 @@ export class Cliente {
   user: User;
 
   @OneToMany(() => Sale, (sale) => sale.client)
-  sale: Sale[];
+  sale?: Sale[];
 
   // @OneToMany(() => Sale)
   // sales: Sale[];

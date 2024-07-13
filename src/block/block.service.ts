@@ -32,8 +32,8 @@ export class BlockService {
     await this.blockRepository.save(block);
     return block;
   }
-
-  findAll() {
+ 
+  findAll() { 
     return this.blockRepository.find({relations:['lots']});
   }
 

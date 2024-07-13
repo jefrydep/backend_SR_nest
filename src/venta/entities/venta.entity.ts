@@ -33,12 +33,16 @@ export class Sale {
     { eager: true }, // esto es para que cargue atuomaticamnte la relacion de usuario cliente
   )
   user: User;
-
-  @Column()
-   clientId:string
+ 
 
   @ManyToOne(() => Cliente, (client) => client.sale)
   client: Cliente;
+
+
+
+  @OneToOne(() => Lot, lot => lot.sale)
+  @JoinColumn()
+  lot: Lot;
   // @Column('text')
   // idLote: string;
 

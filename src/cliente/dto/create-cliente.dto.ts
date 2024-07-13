@@ -6,6 +6,7 @@ import {
   IsDate,
   IsIn,
 } from 'class-validator';
+import { CreateVentaDto } from 'src/venta/dto/create-venta.dto';
 
 export class CreateClienteDto {
   @IsString()
@@ -75,4 +76,8 @@ export class CreateClienteDto {
   @IsString()
   @IsOptional()
   birthdayDateSpouse: string;
+
+
+  @IsOptional()
+  sales?:CreateVentaDto[];
 }

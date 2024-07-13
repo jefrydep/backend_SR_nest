@@ -10,6 +10,7 @@ import {
   isString,
   minLength,
 } from 'class-validator';
+import { CreateVentaDto } from 'src/venta/dto/create-venta.dto';
 
 export class CreateUserDto {
   @IsString()
@@ -46,6 +47,8 @@ export class CreateUserDto {
   })
   password: string
 
+  @IsOptional()
+  sales?:CreateVentaDto[];
   
   // @IsString()
   // idCorporation: string="1995"

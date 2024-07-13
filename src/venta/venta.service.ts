@@ -14,6 +14,7 @@ import { Repository } from 'typeorm';
 import { Cliente } from 'src/cliente/entities/cliente.entity';
 import { Lot } from 'src/lot/entities/lote.entity';
 import { User } from 'src/auth/entities/user.entity';
+import { CreateClienteDto } from 'src/cliente/dto/create-cliente.dto';
 
 @Injectable()
 export class VentaService {
@@ -22,43 +23,53 @@ export class VentaService {
     private readonly ventaRepository: Repository<Sale>,
     @InjectRepository(Cliente)
     private readonly clientRespository: Repository<Cliente>,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+
     @InjectRepository(Lot)
     private readonly lotRespository: Repository<Lot>,
   ) {}
-  async create(id: string, createVentaDto: CreateVentaDto, user: User) {
+
+  async create(createVentaDto: CreateVentaDto): Promise<Sale> {
     try {
-      const { clientId, ...saleDetails } = createVentaDto;
-      // const lote = await this.lotRespository.findOneBy({ id: lot });
-      const clientFound = await this.clientRespository.findOneBy({id:clientId});
-
-      // if (!lote) {
-      //   throw new NotFoundException(`Lote with ID ${idLote} not found`);
-      // }
-
-      const lotfound = await this.lotRespository.findOne({
-        where: { id: id },
+      const lot = await this.lotRespository.findOne({
+        where: {
+          id: createVentaDto.lotId,
+        },
       });
-      // const clientFound = await this.lotRespository.findOne({
-      //   where: { id: idClient },
-      // });
-      if (!lotfound) {
-        return new HttpException('user not found', HttpStatus.NOT_FOUND);
+      if (!lot) {
+        throw new NotFoundException('Lot not found');
       }
-      // Crea la venta con las relaciones client y lot
-      // const clientfoun = await this.clientRespository.findOneBy({ id: client });
-      // const lotFound = await this.lotRespository.findOneBy({ id: lot });
-      const newSale = this.ventaRepository.create({
-        ...saleDetails,
-        lote: lotfound,
-        user,
-        client: clientFound,
 
-        // Asigna el lote encontrado a la venta
+      if (lot.sale) {
+        throw new Error('Lot has already been sold');
+      }
+      const client = await this.clientRespository.findOne({
+        where: {
+          id: createVentaDto.clientId,
+        },
       });
 
-      const savedSale = await this.ventaRepository.save(newSale);
+      if (!client) {
+        throw new NotFoundException('Client not found');
+      }
+      const user = await this.userRepository.findOne({
+        where: { id: createVentaDto.userId },
+      });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      const sale = this.ventaRepository.create({
+        ...createVentaDto,
+        user,
+        client,
+        lot,
+      });
 
-      return savedSale;
+      await this.ventaRepository.save(sale);
+      return sale;
+
       // return savedSale;
     } catch (error) {
       this.handleDbErrors(error);

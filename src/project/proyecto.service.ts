@@ -4,16 +4,20 @@ import { UpdateProyectoDto } from './dto/update-proyecto.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Proyecto } from './entities/proyecto.entity';
 import { Repository } from 'typeorm';
+import { Lot } from 'src/lot/entities/lote.entity';
+import { Block } from 'src/block/entities/block.entity';
 
 @Injectable()
-
 export class ProyectoService {
   constructor(
     @InjectRepository(Proyecto)
-    private readonly proyectoRepository:Repository<Proyecto>
-  ){
+    private readonly proyectoRepository: Repository<Proyecto>,
 
-  }
+    @InjectRepository(Lot)
+    private readonly lotRepository: Repository<Lot>,
+    @InjectRepository(Block)
+    private readonly blockRepository: Repository<Block>,
+  ) {}
   async create(createProyectoDto: CreateProyectoDto) {
     const proyecto = this.proyectoRepository.create(createProyectoDto);
     await this.proyectoRepository.save(proyecto);
@@ -21,8 +25,28 @@ export class ProyectoService {
     return proyecto;
   }
 
-  findAll() {
-    return this.proyectoRepository.find({relations:['blocks']});
+  async findAll() {
+    const projects = await this.proyectoRepository.find({
+      relations: ['blocks', 'blocks.lots'],
+    });
+  
+    return projects.map(project => {
+      const totalLots = project.blocks.reduce((sum, block) => sum + block.lots.length, 0);
+      const soldLots = project.blocks.reduce((sum, block) => 
+        sum + block.lots.filter(lot => lot.isSold !== false).length, 0
+      );
+      const availableLots = totalLots - soldLots;
+  
+      // Retornar el proyecto sin la propiedad blocks
+      const { blocks, ...projectWithoutBlocks } = project;
+  
+      return {
+        ...projectWithoutBlocks,
+        totalLots,
+        soldLots,
+        availableLots,
+      };
+    });
   }
 
   findOne(id: number) {
@@ -31,11 +55,11 @@ export class ProyectoService {
 
   async update(id: string, updateProyectoDto: UpdateProyectoDto) {
     const proyecto = await this.proyectoRepository.preload({
-      id:id,
-      ...updateProyectoDto
+      id: id,
+      ...updateProyectoDto,
     });
-    if(!proyecto)
-    throw new NotFoundException(`proyecto with id: ${id} not found` )
+    if (!proyecto)
+      throw new NotFoundException(`proyecto with id: ${id} not found`);
     await this.proyectoRepository.save(proyecto);
 
     return proyecto;

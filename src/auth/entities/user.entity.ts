@@ -57,7 +57,7 @@ export class User {
   clients?: Cliente[];
 
   @OneToMany(() => Sale, (sale) => sale.user, { cascade: false })
-  sale?: Sale[];
+  sales?: Sale[];
 
   @ManyToOne(
     () => Corporation,
