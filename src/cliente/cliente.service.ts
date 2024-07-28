@@ -50,7 +50,7 @@ export class ClienteService {
     } catch (error) {
       this.handleDbErrors(error);
     }
-  }    
+  }
 
   findAll(paginationDto: PaginationDto) {
     const { limit = 0, offset = 0 } = paginationDto;
@@ -190,7 +190,6 @@ export class ClienteService {
         {
           style: 'tableExample',
           table: {
-  
             headerRows: 1,
             widths: [20, 160, 60, 70, 50, 100], // Ajusta las anchuras según tus necesidades
             body: [
@@ -240,7 +239,7 @@ export class ClienteService {
           alignment: 'center',
           margin: [0, 0, 0, 10], // Márgenes [arriba, izquierda, abajo, derecha]
         },
-        
+
         tableExample: {
           margin: [0, 5, 0, 15], // Márgenes [arriba, izquierda, abajo, derecha]
         },

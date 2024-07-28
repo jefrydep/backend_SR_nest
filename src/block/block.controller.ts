@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { BlockService } from './block.service';
 import { CreateBlockDto } from './dto/create-block.dto';
 import { UpdateBlockDto } from './dto/update-block.dto';
@@ -12,9 +12,9 @@ export class BlockController {
     return this.blockService.create(createBlockDto);
   }
 
-  @Get('findAll')
-  findAll() {
-    return this.blockService.findAll();
+  @Get('project/:projectId')
+  findAll(@Param('projectId',ParseUUIDPipe)projectId:string) {
+    return this.blockService.findAll(projectId);
   }
 
   @Get(':id')

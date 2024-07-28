@@ -24,7 +24,11 @@ export class ProyectoService {
     // await proyecto.blocks;
     return proyecto;
   }
-
+  async findOne(id: string) {
+    const project = await this.proyectoRepository.findOneBy({ id });
+    if (!project) throw new NotFoundException(`Project with ${id} not found`);
+    return project;
+  }
   async findAll() {
     const projects = await this.proyectoRepository.find({
       relations: ['blocks', 'blocks.lots'],
@@ -49,9 +53,7 @@ export class ProyectoService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} proyecto`;
-  }
+   
 
   async update(id: string, updateProyectoDto: UpdateProyectoDto) {
     const proyecto = await this.proyectoRepository.preload({
@@ -65,7 +67,9 @@ export class ProyectoService {
     return proyecto;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} proyecto`;
+ 
+  async remove(id: string) {
+    const project = await this.findOne(id);
+    await this.proyectoRepository.remove(project);
   }
 }
