@@ -48,18 +48,17 @@ export class LoteService {
     throw new InternalServerErrorException('please check server logs');
   }
 
-  // async findAll() {
-  //   return await this.loteRespository.find({relations:["block"]});
-  // }
-  async findAll(projectId: string) {
-    const lots = await this.loteRespository
-      .createQueryBuilder('lot')
-      .innerJoinAndSelect('lot.block', 'block')
-      .where('block.projectId = :projectId', { projectId })
-      .getMany();
-    return lots;
-    // return this.loteRespository.find({});
+  
+ async findAll() {
+    return  await this.loteRespository.find({ });
   }
+//  async findAll(projectId:string) {
+//     const lots = await this.loteRespository.createQueryBuilder('lot')
+//     .leftJoin('lot.project','project')
+
+
+//     return this.loteRespository.find({});
+//   }
 
   findOne(id: number) {
     return `This action returns a #${id} lote`;

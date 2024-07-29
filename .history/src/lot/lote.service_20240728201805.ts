@@ -55,10 +55,10 @@ export class LoteService {
     const lots = await this.loteRespository
       .createQueryBuilder('lot')
       .innerJoinAndSelect('lot.block', 'block')
-      .where('block.projectId = :projectId', { projectId })
+      .where('bloc.projectId = :projectId', { projectId })
       .getMany();
-    return lots;
-    // return this.loteRespository.find({});
+
+    return this.loteRespository.find({});
   }
 
   findOne(id: number) {

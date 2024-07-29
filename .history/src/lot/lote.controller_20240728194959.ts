@@ -12,15 +12,15 @@ export class LoteController {
     return this.loteService.create(createLoteDto);
   }
 
-  // @Get('findAll')
-  // findAll() {
-  //   return this.loteService.findAll();
-  // }
-
-  @Get('project/:projectId')
-  findAll(@Param('projectId',ParseUUIDPipe)projectId:string) {
-    return this.loteService.findAll(projectId);
+  @Get('findAll')
+  findAll() {
+    return this.loteService.findAll();
   }
+
+  // @Get('project/:projectId')
+  // findAll(@Param('projectId',ParseUUIDPipe)projectId:string) {
+  //   return this.loteService.findAll(projectId);
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

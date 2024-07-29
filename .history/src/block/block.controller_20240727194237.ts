@@ -23,8 +23,8 @@ export class BlockController {
   }
 
   @Patch(':id')
-  update(@Param('id',ParseUUIDPipe) id: string, @Body() updateBlockDto: UpdateBlockDto) {
-    return this.blockService.update(id, updateBlockDto);
+  update(@Param('id') id: string, @Body() updateBlockDto: UpdateBlockDto) {
+    return this.blockService.update(+id, updateBlockDto);
   }
 
   @Delete(':id')

@@ -67,14 +67,8 @@ export class BlockService {
     return `This action returns a #${id} block`;
   }
 
-  async update(id: string, updateBlockDto: UpdateBlockDto) {
-    const block = await this.blockRepository.preload({
-      id: id,
-      ...updateBlockDto,
-    });
-    if (!block) throw new NotFoundException(`Block with id ${id} not found`);
-    await this.blockRepository.save(block);
-    return block;
+  update(id: number, updateBlockDto: UpdateBlockDto) {
+    return `This action updates a #${id} block`;
   }
 
   remove(id: number) {

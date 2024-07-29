@@ -9,7 +9,7 @@ export class CreateBlockDto {
   // @IsOptional()
   // aream2?: string;
   
-  @IsString()
+  // @IsString()
   @IsOptional()
   description?: string;
 

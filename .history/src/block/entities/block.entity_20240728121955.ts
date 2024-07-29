@@ -1,13 +1,7 @@
 import { IsOptional } from 'class-validator';
 import { Lot } from 'src/lot/entities/lote.entity';
 import { Proyecto } from 'src/project/entities/proyecto.entity';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Block {
   @PrimaryGeneratedColumn('uuid')
@@ -19,15 +13,18 @@ export class Block {
   // @IsOptional()
   // @Column('text')
   // aream2?: string;
-
-  @Column('text', {
-    default: '',
+  
+  @Column('text',{
+    default:"",
   })
   description?: string;
-
+  
   @ManyToOne(() => Proyecto, (project) => project.blocks)
   project: Proyecto;
 
-  @OneToMany(() => Lot, (lot) => lot.block, { cascade: true })
-  lots?: Lot[];
+  @OneToMany(()=> Lot,(lot)=> lot.block,{cascade:true})
+  lots?:Lot[]
+
+   
+
 }
