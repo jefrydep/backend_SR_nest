@@ -34,16 +34,13 @@ export class CreateVentaDto {
   @IsNumber()
   @IsPositive()
   amount: number;
-  //   importe de venta
+  //   importe
 
-  // observaciones
   @IsString()
   obserbations: string;
 
   // @IsNotEmpty()
   // userId: string;
-
-  // numero de cuotas opcional si es al credito
   @IsOptional()
   @IsNumber()
   @IsPositive()
@@ -60,20 +57,9 @@ export class CreateVentaDto {
   @IsString()
   numberReceipt: string;
 
-  // Forma de pago
-  // pago con cheque,deposito banco,transferencia bancaria,pago efectivo,tarjeta de credito, tarjeta de debito
-
-  @IsString()
-  paymentMethod: string;
-
-  // Código de operación
-  @IsString()
-  operationCode: string;
-
-  @IsString()
-  voucherImg: string;
-
   @IsOptional()
+  @IsNumber()
+  @IsPositive()
   @IsDateString()
   firstInstallmentDate?: Date;
 

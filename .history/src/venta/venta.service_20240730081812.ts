@@ -37,9 +37,6 @@ export class VentaService {
       const project = await this.projectRepository.findOne({
         where: { id: createVentaDto.projectId },
       });
-      if (!project) {
-        throw new NotFoundException('Project not found');
-      }
       const lot = await this.lotRespository.findOne({
         where: {
           id: createVentaDto.lotId,
@@ -71,7 +68,7 @@ export class VentaService {
         ...createVentaDto,
         client,
         lot,
-        project,
+        project
       });
 
       await this.ventaRepository.save(sale);
@@ -83,22 +80,8 @@ export class VentaService {
     }
   }
 
-  // findAll() {
-  //   return this.ventaRepository.find({});
-  // }
-
-  async findAll(projectId: string) {
-    const sales = await this.ventaRepository
-      .createQueryBuilder('sale')
-      .leftJoin('sale.project', 'project')
-      .addSelect(['project.nameProject'])
-      .where('project.id = :projectId', { projectId })
-      .getMany();
-
-    return sales.map((sale) => ({
-      ...sale,
-      project: sale.project.nameProject,
-    }));
+  findAll() {
+    return this.ventaRepository.find({});
   }
 
   findOne(id: number) {
@@ -107,8 +90,8 @@ export class VentaService {
 
   async update(id: string, updateVentaDto: UpdateVentaDto) {
     const venta = await this.ventaRepository.preload({
-      id:id,
-      ...updateVentaDto,
+      // id:id,
+      // ...updateVentaDto,
     });
     if (!venta) throw new NotFoundException(`Venta with id : ${id} not found`);
     await this.ventaRepository.save(venta);

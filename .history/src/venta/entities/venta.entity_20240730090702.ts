@@ -10,7 +10,6 @@ import { User } from 'src/auth/entities/user.entity';
 import { Cliente } from 'src/cliente/entities/cliente.entity';
 import { Lot } from 'src/lot/entities/lote.entity';
 import { Proyecto } from 'src/project/entities/proyecto.entity';
-import { IsString } from 'class-validator';
 
 @Entity()
 export class Sale {
@@ -32,39 +31,13 @@ export class Sale {
   @Column('int', { default: 0 })
   installmentsNumber?: number;
 
-  @Column('text')
-  bankName: string;
-
-  @Column('text')
-  receipt: string;
-
-  @Column('text')
-  numberReceipt: string;
-
-  @Column('text')
-  paymentMethod: string;
-
-  @Column('text')
-  operationCode: string;
-
-  @Column('text')
-  voucherImg: string;
-
-  @Column({ nullable: true })
-  firstInstallmentDate?: Date;
-
-  @Column('decimal', { precision: 10, scale: 2, default: 0 })
-  initial?: number;
-
-  @Column('text')
-  seller: string;
-
   // @ManyToOne(
   //   () => User,
   //   (user) => user.clients,
   //   { eager: true }, // esto es para que cargue atuomaticamnte la relacion de usuario cliente
   // )
   // user: User;
+
   @ManyToOne(() => Cliente, (client) => client.sale)
   client: Cliente;
 

@@ -35,30 +35,26 @@ export class Sale {
   @Column('text')
   bankName: string;
 
-  @Column('text')
+  @IsString()
   receipt: string;
 
-  @Column('text')
+  @IsString()
   numberReceipt: string;
 
-  @Column('text')
+  @IsString()
   paymentMethod: string;
 
-  @Column('text')
+  @IsString()
   operationCode: string;
 
-  @Column('text')
+  @IsString()
   voucherImg: string;
 
-  @Column({ nullable: true })
+  @Column('date')
   firstInstallmentDate?: Date;
 
-  @Column('decimal', { precision: 10, scale: 2, default: 0 })
+  @Column('decimal', { precision: 10, scale: 2 })
   initial?: number;
-
-  @Column('text')
-  seller: string;
-
   // @ManyToOne(
   //   () => User,
   //   (user) => user.clients,

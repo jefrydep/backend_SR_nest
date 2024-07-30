@@ -35,13 +35,9 @@ export class VentaController {
     return this.ventaService.create(createVentaDto);
   }
 
-  // @Get('findAll')
-  // findAll() {
-  //   return this.ventaService.findAll();
-  // }
-  @Get('project/:projectId')
-  findAll(@Param('projectId',ParseUUIDPipe)projectId:string){
-    return this.ventaService.findAll(projectId)
+  @Get('findAll')
+  findAll() {
+    return this.ventaService.findAll();
   }
 
   @Get(':id')

@@ -50,15 +50,16 @@ export class Sale {
   @Column('text')
   voucherImg: string;
 
-  @Column({ nullable: true })
+  @Column('date')
   firstInstallmentDate?: Date;
 
-  @Column('decimal', { precision: 10, scale: 2, default: 0 })
+  @Column('decimal', { precision: 10, scale: 2 })
   initial?: number;
 
   @Column('text')
   seller: string;
 
+  
   // @ManyToOne(
   //   () => User,
   //   (user) => user.clients,

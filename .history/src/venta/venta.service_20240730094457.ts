@@ -94,11 +94,6 @@ export class VentaService {
       .addSelect(['project.nameProject'])
       .where('project.id = :projectId', { projectId })
       .getMany();
-
-    return sales.map((sale) => ({
-      ...sale,
-      project: sale.project.nameProject,
-    }));
   }
 
   findOne(id: number) {
@@ -107,8 +102,8 @@ export class VentaService {
 
   async update(id: string, updateVentaDto: UpdateVentaDto) {
     const venta = await this.ventaRepository.preload({
-      id:id,
-      ...updateVentaDto,
+      // id:id,
+      // ...updateVentaDto,
     });
     if (!venta) throw new NotFoundException(`Venta with id : ${id} not found`);
     await this.ventaRepository.save(venta);

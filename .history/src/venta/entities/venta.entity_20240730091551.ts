@@ -35,29 +35,24 @@ export class Sale {
   @Column('text')
   bankName: string;
 
-  @Column('text')
+  @IsString()
   receipt: string;
 
-  @Column('text')
+  @IsString()
   numberReceipt: string;
 
-  @Column('text')
+  @IsString()
   paymentMethod: string;
 
-  @Column('text')
+  @IsString()
   operationCode: string;
 
-  @Column('text')
+  @IsString()
   voucherImg: string;
 
-  @Column({ nullable: true })
+  
+  @Column('date')
   firstInstallmentDate?: Date;
-
-  @Column('decimal', { precision: 10, scale: 2, default: 0 })
-  initial?: number;
-
-  @Column('text')
-  seller: string;
 
   // @ManyToOne(
   //   () => User,
@@ -65,6 +60,7 @@ export class Sale {
   //   { eager: true }, // esto es para que cargue atuomaticamnte la relacion de usuario cliente
   // )
   // user: User;
+
   @ManyToOne(() => Cliente, (client) => client.sale)
   client: Cliente;
 

@@ -15,7 +15,6 @@ import { Cliente } from 'src/cliente/entities/cliente.entity';
 import { Lot } from 'src/lot/entities/lote.entity';
 import { User } from 'src/auth/entities/user.entity';
 import { CreateClienteDto } from 'src/cliente/dto/create-cliente.dto';
-import { Proyecto } from 'src/project/entities/proyecto.entity';
 
 @Injectable()
 export class VentaService {
@@ -25,8 +24,8 @@ export class VentaService {
     @InjectRepository(Cliente)
     private readonly clientRespository: Repository<Cliente>,
 
-    @InjectRepository(Proyecto)
-    private readonly projectRepository: Repository<Proyecto>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
 
     @InjectRepository(Lot)
     private readonly lotRespository: Repository<Lot>,
@@ -34,12 +33,6 @@ export class VentaService {
 
   async create(createVentaDto: CreateVentaDto): Promise<Sale> {
     try {
-      const project = await this.projectRepository.findOne({
-        where: { id: createVentaDto.projectId },
-      });
-      if (!project) {
-        throw new NotFoundException('Project not found');
-      }
       const lot = await this.lotRespository.findOne({
         where: {
           id: createVentaDto.lotId,
@@ -69,9 +62,9 @@ export class VentaService {
       // }
       const sale = this.ventaRepository.create({
         ...createVentaDto,
+
         client,
         lot,
-        project,
       });
 
       await this.ventaRepository.save(sale);
@@ -83,22 +76,8 @@ export class VentaService {
     }
   }
 
-  // findAll() {
-  //   return this.ventaRepository.find({});
-  // }
-
-  async findAll(projectId: string) {
-    const sales = await this.ventaRepository
-      .createQueryBuilder('sale')
-      .leftJoin('sale.project', 'project')
-      .addSelect(['project.nameProject'])
-      .where('project.id = :projectId', { projectId })
-      .getMany();
-
-    return sales.map((sale) => ({
-      ...sale,
-      project: sale.project.nameProject,
-    }));
+  findAll() {
+    return this.ventaRepository.find({});
   }
 
   findOne(id: number) {
@@ -107,8 +86,8 @@ export class VentaService {
 
   async update(id: string, updateVentaDto: UpdateVentaDto) {
     const venta = await this.ventaRepository.preload({
-      id:id,
-      ...updateVentaDto,
+      // id:id,
+      // ...updateVentaDto,
     });
     if (!venta) throw new NotFoundException(`Venta with id : ${id} not found`);
     await this.ventaRepository.save(venta);

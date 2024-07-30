@@ -71,9 +71,10 @@ export class CreateVentaDto {
   operationCode: string;
 
   @IsString()
-  voucherImg: string;
+  voucherImg:string
 
-  @IsOptional()
+
+  
   @IsDateString()
   firstInstallmentDate?: Date;
 

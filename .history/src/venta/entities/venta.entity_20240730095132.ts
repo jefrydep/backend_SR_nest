@@ -53,7 +53,7 @@ export class Sale {
   @Column({ nullable: true })
   firstInstallmentDate?: Date;
 
-  @Column('decimal', { precision: 10, scale: 2, default: 0 })
+  @Column('decimal', { precision: 10, scale: 2 })
   initial?: number;
 
   @Column('text')

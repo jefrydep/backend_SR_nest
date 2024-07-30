@@ -25,25 +25,21 @@ import { Lot } from 'src/lot/entities/lote.entity';
 export class CreateVentaDto {
   @IsString()
   saleType: string;
-  //   tipodeventa contado|credito
+  //   tipodeventa
 
-  // fecha de venta
   @IsDateString()
   saleDate: Date;
 
   @IsNumber()
   @IsPositive()
   amount: number;
-  //   importe de venta
-
-  // observaciones
+  //   importe  
+  
   @IsString()
   obserbations: string;
 
   // @IsNotEmpty()
   // userId: string;
-
-  // numero de cuotas opcional si es al credito
   @IsOptional()
   @IsNumber()
   @IsPositive()
@@ -51,39 +47,31 @@ export class CreateVentaDto {
 
   @IsString()
   bankName: string;
-
+  
   // comprobante
   @IsString()
-  receipt: string;
+  receipt:string
 
-  // numero de comprobante
-  @IsString()
-  numberReceipt: string;
-
-  // Forma de pago
-  // pago con cheque,deposito banco,transferencia bancaria,pago efectivo,tarjeta de credito, tarjeta de debito
-
-  @IsString()
-  paymentMethod: string;
-
-  // Código de operación
-  @IsString()
-  operationCode: string;
-
-  @IsString()
-  voucherImg: string;
 
   @IsOptional()
+  @IsNumber()
+  @IsPositive()
+
+
   @IsDateString()
   firstInstallmentDate?: Date;
 
+
+
+
+  
   @IsOptional()
   @IsNumber()
   @IsPositive()
   initial?: number;
 
   @IsString()
-  seller: string;
+  seller:string
 
   @IsNotEmpty()
   lotId: string;
