@@ -59,17 +59,9 @@ export class Sale {
   @Column('decimal', { precision: 10, scale: 2, default: 0 })
   remainingAmount?: number;
 
-  @Column('decimal', { precision: 10, scale: 2, default: 0 })
-  montlyFee?: number;
-
   @Column('text')
   seller: string;
 
-  @Column('json', { nullable: true })
-  monthlyPayments: {
-    amount: number;
-    dueDate: Date;
-  }[];
   // @ManyToOne(
   //   () => User,
   //   (user) => user.clients,

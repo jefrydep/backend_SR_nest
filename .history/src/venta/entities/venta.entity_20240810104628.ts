@@ -65,11 +65,6 @@ export class Sale {
   @Column('text')
   seller: string;
 
-  @Column('json', { nullable: true })
-  monthlyPayments: {
-    amount: number;
-    dueDate: Date;
-  }[];
   // @ManyToOne(
   //   () => User,
   //   (user) => user.clients,

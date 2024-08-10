@@ -82,9 +82,8 @@ export class VentaService {
         }).map((_, index) => {
           const dueDate = new Date(saleDate); // Copia de saleDate
           dueDate.setMonth(dueDate.getMonth() + index + 1); // Incrementar el mes para cada cuota
-          const roundedAmount = Math.round(monthlyFee * 10) / 10;
           return {
-            amount: roundedAmount,
+            amount: monthlyFee,
             dueDate,
           };
         });

@@ -73,18 +73,15 @@ export class VentaService {
         remainingAmount = createVentaDto.amount - createVentaDto.initial;
         const monthlyFee = remainingAmount / createVentaDto.installmentsNumber;
 
-
-      // Convertir saleDate de string a Date
-      const saleDate = new Date(createVentaDto.saleDate);
         // Generar cuotas mensuales
         monthlyPayments = Array.from({
           length: createVentaDto.installmentsNumber,
         }).map((_, index) => {
-          const dueDate = new Date(saleDate); // Copia de saleDate
+          // const dueDate = new Date();
+          const dueDate = createVentaDto.saleDate
           dueDate.setMonth(dueDate.getMonth() + index + 1); // Incrementar el mes para cada cuota
-          const roundedAmount = Math.round(monthlyFee * 10) / 10;
           return {
-            amount: roundedAmount,
+            amount: monthlyFee,
             dueDate,
           };
         });

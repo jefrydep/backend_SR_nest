@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import {
   IsArray,
   IsDate,
@@ -14,7 +13,6 @@ import {
   Matches,
   MaxLength,
   MinLength,
-  ValidateNested,
   isNotEmpty,
   isString,
   isUUID,
@@ -87,11 +85,6 @@ export class CreateVentaDto {
   @IsOptional()
   @IsNumber()
   @IsPositive()
-  montlyFee?: number;
-
-  @IsOptional()
-  @IsNumber()
-  @IsPositive()
   remainingAmount?: number;
 
   @IsString()
@@ -132,19 +125,4 @@ export class CreateVentaDto {
 
   // @IsObject() // Espera un objeto de Lote
   // lot: Lot;
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => MonthlyPayment)
-  @IsOptional()
-  monthlyPayments?: MonthlyPayment[];
-
-  // Sub-clase para representar los pagos mensuales
 }
-class MonthlyPayment {
-  @IsNumber()
-  amount: number;
-
-  @IsDate()
-  dueDate: Date;
-}
- 

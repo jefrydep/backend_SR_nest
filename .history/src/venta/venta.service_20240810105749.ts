@@ -36,34 +36,34 @@ export class VentaService {
       const project = await this.projectRepository.findOne({
         where: { id: createVentaDto.projectId },
       });
-
+  
       if (!project) {
         throw new NotFoundException('Project not found');
       }
-
+  
       const lot = await this.lotRespository.findOne({
         where: { id: createVentaDto.lotId },
       });
-
+  
       if (!lot) {
         throw new NotFoundException('Lot not found');
       }
-
+  
       if (lot.sale) {
         throw new Error('Lot has already been sold');
       }
-
+  
       const client = await this.clientRespository.findOne({
         where: { id: createVentaDto.clientId },
       });
-
+  
       if (!client) {
         throw new NotFoundException('Client not found');
       }
-
+  
       let remainingAmount: number | undefined;
-      let monthlyPayments: { amount: number; dueDate: Date }[] | undefined;
-
+      let montlyFee: number | undefined;
+  
       // Realizar cálculos solo si amount, initial e installmentsNumber están presentes
       if (
         createVentaDto.amount !== undefined &&
@@ -71,43 +71,25 @@ export class VentaService {
         createVentaDto.installmentsNumber !== undefined
       ) {
         remainingAmount = createVentaDto.amount - createVentaDto.initial;
-        const monthlyFee = remainingAmount / createVentaDto.installmentsNumber;
-
-
-      // Convertir saleDate de string a Date
-      const saleDate = new Date(createVentaDto.saleDate);
-        // Generar cuotas mensuales
-        monthlyPayments = Array.from({
-          length: createVentaDto.installmentsNumber,
-        }).map((_, index) => {
-          const dueDate = new Date(saleDate); // Copia de saleDate
-          dueDate.setMonth(dueDate.getMonth() + index + 1); // Incrementar el mes para cada cuota
-          const roundedAmount = Math.round(monthlyFee * 10) / 10;
-          return {
-            amount: roundedAmount,
-            dueDate,
-          };
-        });
+        montlyFee = remainingAmount / createVentaDto.installmentsNumber;
       }
-
+  
       const sale = this.ventaRepository.create({
         ...createVentaDto,
-
         client,
         lot,
         project,
-        // projectId: createVentaDto.projectId,
         remainingAmount, // Solo se guardará si fue calculado
-        monthlyPayments, // Array de cuotas mensuales generadas
+        montlyFee,      // Solo se guardará si fue calculado
       });
-
+  
       await this.ventaRepository.save(sale);
       return sale;
     } catch (error) {
       this.handleDbErrors(error);
     }
   }
-
+  
   // async create(createVentaDto: CreateVentaDto): Promise<Sale> {
   //   try {
   //     const project = await this.projectRepository.findOne({
