@@ -368,7 +368,6 @@ export class VentaService {
     const pdfBuffer: Buffer = await new Promise(async (resolvePromise) => {
       const RucId = '10107506293420';
       const address = 'jr: lima 456';
-      const money = 'S/ ';
       const doc = new PDFDocument({
         size: 'LETTER',
       });
@@ -408,8 +407,8 @@ export class VentaService {
       if (!lot) {
         throw new NotFoundException('Lot not found');
       }
-      //  console.log(sale)
-      console.log(lot);
+       console.log(sale)
+       console.log(lot)
 
       // Información general
       doc
@@ -433,31 +432,10 @@ export class VentaService {
         .text(`Lote:`, { align: 'left', continued: true })
         .text('           ', { continued: true })
         .font('Helvetica')
-        .text(`${lot.block.block}  ${sale.lot.loteCode}`, {})
-        .font('Helvetica-Bold')
-        .text(`Crédito:`, { align: 'left', continued: true })
-        .text('      ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.remainingAmount}`, { continued: true })
-        .text('      ', { continued: true })
-        // INICIAL
-        .font('Helvetica-Bold')
-        .text(`Inicial:`, { align: 'left', continued: true })
-        .text(' ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.initial}`, { continued: true })
-        .text('      ', { continued: true })
-        // TOTAL DE VENTA
-        .font('Helvetica-Bold')
-        .text(`Total de venta:`, { align: 'left', continued: true })
-        .text(' ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.amount}`)
-        // .text('      ', { continued: true });
-        .font('Helvetica-Bold')
-        .text(`N° Cuotas:  ${sale.installmentsNumber} Cuotas Mensualess`, {
+        .text(`${sale.lot.block}  ${sale.lot.loteCode}`, {})
+
+        .text(`Número de Cuotas: ${sale.monthlyPayments.length}`, {
           align: 'left',
-          continue: true,
         });
 
       doc.moveDown();
@@ -466,9 +444,7 @@ export class VentaService {
       doc
         .font('Helvetica-Bold')
         .fontSize(12)
-        .text('CRONOGRAMA DE PAGOS MENSUALES - VENTA AL CRÉDITO', {
-          align: 'center',
-        });
+        .text('Cuotas Mensuales:', { align: 'left' });
       doc.moveDown();
       const convertToDate = (dateInput: any): Date => {
         if (!(dateInput instanceof Date)) {
@@ -478,8 +454,7 @@ export class VentaService {
       };
       // Datos de la tabla
       const creditData = [
-        
-        ['N°', 'MONTO', 'FECHA DE PAGO'],
+        ['Índice', 'Monto', 'Fecha de Pago'],
         ...sale.monthlyPayments.map((payment, index) => [
           (index + 1).toString(),
           `S/ ${payment.amount} `, // Índice // Monto
@@ -503,7 +478,6 @@ export class VentaService {
           fillColor: '#4F81BD', // Color de fondo
           borderColor: '#4F81BD', // Color del borde
         },
-       
         rowStyle: {
           font: 'Helvetica',
           fontSize: 10,

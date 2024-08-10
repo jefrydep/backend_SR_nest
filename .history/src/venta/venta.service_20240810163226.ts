@@ -466,7 +466,7 @@ export class VentaService {
       doc
         .font('Helvetica-Bold')
         .fontSize(12)
-        .text('CRONOGRAMA DE PAGOS MENSUALES - VENTA AL CRÉDITO', {
+        .text('CRONOGRAMA DE PAGOS MENSUALES - VENTA AL CRÉDITO:', {
           align: 'center',
         });
       doc.moveDown();
@@ -478,7 +478,6 @@ export class VentaService {
       };
       // Datos de la tabla
       const creditData = [
-        
         ['N°', 'MONTO', 'FECHA DE PAGO'],
         ...sale.monthlyPayments.map((payment, index) => [
           (index + 1).toString(),
@@ -503,7 +502,6 @@ export class VentaService {
           fillColor: '#4F81BD', // Color de fondo
           borderColor: '#4F81BD', // Color del borde
         },
-       
         rowStyle: {
           font: 'Helvetica',
           fontSize: 10,

@@ -466,7 +466,7 @@ export class VentaService {
       doc
         .font('Helvetica-Bold')
         .fontSize(12)
-        .text('CRONOGRAMA DE PAGOS MENSUALES - VENTA AL CRÉDITO', {
+        .text('CRONOGRAMA DE PAGOS MENSUALES - VENTA AL CRÉDITO:', {
           align: 'center',
         });
       doc.moveDown();
@@ -503,7 +503,9 @@ export class VentaService {
           fillColor: '#4F81BD', // Color de fondo
           borderColor: '#4F81BD', // Color del borde
         },
-       
+        alignTable:{
+          align:"center"
+        },
         rowStyle: {
           font: 'Helvetica',
           fontSize: 10,

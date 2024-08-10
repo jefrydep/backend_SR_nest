@@ -366,9 +366,6 @@ export class VentaService {
 
   async generarPdf(saleId: string): Promise<Buffer> {
     const pdfBuffer: Buffer = await new Promise(async (resolvePromise) => {
-      const RucId = '10107506293420';
-      const address = 'jr: lima 456';
-      const money = 'S/ ';
       const doc = new PDFDocument({
         size: 'LETTER',
       });
@@ -380,16 +377,9 @@ export class VentaService {
       doc
         .font('Helvetica-Bold')
         .fontSize(12)
-        .text(' RESIDENCIAL PALOMINO', 50, 10, { align: 'left' });
-      // .text('RUC:', 50, 10, { align: 'left' });
+        .text('JefryDeveloper', 50, 10, { align: 'left' });
 
-      doc.moveDown(3);
-      doc
-        .fontSize(16)
-        .text(' EMPRESA INMOBILIARIA PALOMINO S.A.C', { align: 'center' })
-        .font('Helvetica')
-        .text(`RUC:    ${RucId}`, { align: 'center' })
-        .text(`${address}`, { align: 'center' });
+      doc.fontSize(16).text('Reporte de Venta', { align: 'center' });
       doc.moveDown();
 
       // Obtener la venta por ID
@@ -401,63 +391,16 @@ export class VentaService {
       if (!sale) {
         throw new NotFoundException(`Venta with ID ${saleId} not found`);
       }
-      const lot = await this.lotRespository.findOne({
-        where: { id: sale.lot.id },
-        relations: ['block'],
-      });
-      if (!lot) {
-        throw new NotFoundException('Lot not found');
-      }
-      //  console.log(sale)
-      console.log(lot);
 
       // Información general
       doc
-
+        .font('Helvetica-Bold')
         .fontSize(12)
-        // .text(`Índice: ${saleId}`, { align: 'center' })
-        .font('Helvetica-Bold')
-        .text(`Cliente:`, { align: 'left', continued: true })
-        // .moveUp()
-        .text('       ', { continued: true })
-        .font('Helvetica')
-        .text(`${sale.client.fullName}`, { continued: true })
-        .text('       ', { continued: true })
-        .font('Helvetica-Bold')
-        .text(`Dni/Ruc: `, { continued: true })
-        .font('Helvetica')
-        .text(`${sale.client.dni}`)
-
-        // Lote
-        .font('Helvetica-Bold')
-        .text(`Lote:`, { align: 'left', continued: true })
-        .text('           ', { continued: true })
-        .font('Helvetica')
-        .text(`${lot.block.block}  ${sale.lot.loteCode}`, {})
-        .font('Helvetica-Bold')
-        .text(`Crédito:`, { align: 'left', continued: true })
-        .text('      ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.remainingAmount}`, { continued: true })
-        .text('      ', { continued: true })
-        // INICIAL
-        .font('Helvetica-Bold')
-        .text(`Inicial:`, { align: 'left', continued: true })
-        .text(' ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.initial}`, { continued: true })
-        .text('      ', { continued: true })
-        // TOTAL DE VENTA
-        .font('Helvetica-Bold')
-        .text(`Total de venta:`, { align: 'left', continued: true })
-        .text(' ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.amount}`)
-        // .text('      ', { continued: true });
-        .font('Helvetica-Bold')
-        .text(`N° Cuotas:  ${sale.installmentsNumber} Cuotas Mensualess`, {
+        .text(`Índice: ${saleId}`, { align: 'center' })
+        .text(`Nombre del Cliente: ${sale.client.fullName}`, { align: 'left' })
+        .text(`Lote: ${sale.lot.loteCode}`, { align: 'left' })
+        .text(`Número de Cuotas: ${sale.monthlyPayments.length}`, {
           align: 'left',
-          continue: true,
         });
 
       doc.moveDown();
@@ -466,24 +409,16 @@ export class VentaService {
       doc
         .font('Helvetica-Bold')
         .fontSize(12)
-        .text('CRONOGRAMA DE PAGOS MENSUALES - VENTA AL CRÉDITO', {
-          align: 'center',
-        });
+        .text('Cuotas Mensuales:', { align: 'left' });
       doc.moveDown();
-      const convertToDate = (dateInput: any): Date => {
-        if (!(dateInput instanceof Date)) {
-          return new Date(dateInput);
-        }
-        return dateInput;
-      };
+
       // Datos de la tabla
       const creditData = [
-        
-        ['N°', 'MONTO', 'FECHA DE PAGO'],
+        ['Índice', 'Monto', 'Fecha de Pago'],
         ...sale.monthlyPayments.map((payment, index) => [
           (index + 1).toString(),
           `S/ ${payment.amount} `, // Índice // Monto
-          convertToDate(payment.dueDate).toLocaleDateString('es-ES'), // Formato de fecha local
+          payment.dueDate, // Fecha de Pago
         ]),
       ];
 
@@ -503,7 +438,6 @@ export class VentaService {
           fillColor: '#4F81BD', // Color de fondo
           borderColor: '#4F81BD', // Color del borde
         },
-       
         rowStyle: {
           font: 'Helvetica',
           fontSize: 10,

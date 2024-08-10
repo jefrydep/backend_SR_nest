@@ -16,7 +16,14 @@ import { Lot } from 'src/lot/entities/lote.entity';
 import { User } from 'src/auth/entities/user.entity';
 import { CreateClienteDto } from 'src/cliente/dto/create-cliente.dto';
 import { Proyecto } from 'src/project/entities/proyecto.entity';
-const PDFDocument = require('pdfkit-table');
+// const PDFDocument = require('pdfkit-table');
+import * as PDFDocument from 'pdfkit-table';
+// import PDFDocument from 'pdfkit';
+import 'pdfkit-table';
+// const PDFDocument = require('pdfkit');
+// require('pdfkit-table')(PDFDocument);
+
+
 @Injectable()
 export class VentaService {
   constructor(
@@ -336,7 +343,7 @@ export class VentaService {
   //     doc.table({
   //       headers: creditData[0],
   //       rows: creditData.slice(1),
-
+      
   //       width: { min: 50, max: 150 },
   //       align: ['center', 'right','left'],
   //       padding: 10,
@@ -366,33 +373,25 @@ export class VentaService {
 
   async generarPdf(saleId: string): Promise<Buffer> {
     const pdfBuffer: Buffer = await new Promise(async (resolvePromise) => {
-      const RucId = '10107506293420';
-      const address = 'jr: lima 456';
-      const money = 'S/ ';
       const doc = new PDFDocument({
         size: 'LETTER',
       });
 
-      // Encabezado de la página
+      // Aplica la extensión pdfkit-table a la instancia de PDFDocument
+      (doc as any).table = require('pdfkit-table')(doc);
+
+      // Configuración del PDF y tabla
       doc.registerFont('Helvetica-Bold', 'Helvetica-Bold');
       doc.registerFont('Helvetica', 'Helvetica');
 
-      doc
-        .font('Helvetica-Bold')
+      doc.font('Helvetica-Bold')
         .fontSize(12)
-        .text(' RESIDENCIAL PALOMINO', 50, 10, { align: 'left' });
-      // .text('RUC:', 50, 10, { align: 'left' });
+        .text('JefryDeveloper', 50, 10, { align: 'left' });
 
-      doc.moveDown(3);
-      doc
-        .fontSize(16)
-        .text(' EMPRESA INMOBILIARIA PALOMINO S.A.C', { align: 'center' })
-        .font('Helvetica')
-        .text(`RUC:    ${RucId}`, { align: 'center' })
-        .text(`${address}`, { align: 'center' });
+      doc.fontSize(16)
+        .text('Reporte de Venta', { align: 'center' });
       doc.moveDown();
 
-      // Obtener la venta por ID
       const sale = await this.ventaRepository.findOne({
         where: { id: saleId },
         relations: ['client', 'lot'],
@@ -401,121 +400,51 @@ export class VentaService {
       if (!sale) {
         throw new NotFoundException(`Venta with ID ${saleId} not found`);
       }
-      const lot = await this.lotRespository.findOne({
-        where: { id: sale.lot.id },
-        relations: ['block'],
-      });
-      if (!lot) {
-        throw new NotFoundException('Lot not found');
-      }
-      //  console.log(sale)
-      console.log(lot);
 
-      // Información general
-      doc
-
+      doc.font('Helvetica-Bold')
         .fontSize(12)
-        // .text(`Índice: ${saleId}`, { align: 'center' })
-        .font('Helvetica-Bold')
-        .text(`Cliente:`, { align: 'left', continued: true })
-        // .moveUp()
-        .text('       ', { continued: true })
-        .font('Helvetica')
-        .text(`${sale.client.fullName}`, { continued: true })
-        .text('       ', { continued: true })
-        .font('Helvetica-Bold')
-        .text(`Dni/Ruc: `, { continued: true })
-        .font('Helvetica')
-        .text(`${sale.client.dni}`)
-
-        // Lote
-        .font('Helvetica-Bold')
-        .text(`Lote:`, { align: 'left', continued: true })
-        .text('           ', { continued: true })
-        .font('Helvetica')
-        .text(`${lot.block.block}  ${sale.lot.loteCode}`, {})
-        .font('Helvetica-Bold')
-        .text(`Crédito:`, { align: 'left', continued: true })
-        .text('      ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.remainingAmount}`, { continued: true })
-        .text('      ', { continued: true })
-        // INICIAL
-        .font('Helvetica-Bold')
-        .text(`Inicial:`, { align: 'left', continued: true })
-        .text(' ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.initial}`, { continued: true })
-        .text('      ', { continued: true })
-        // TOTAL DE VENTA
-        .font('Helvetica-Bold')
-        .text(`Total de venta:`, { align: 'left', continued: true })
-        .text(' ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.amount}`)
-        // .text('      ', { continued: true });
-        .font('Helvetica-Bold')
-        .text(`N° Cuotas:  ${sale.installmentsNumber} Cuotas Mensualess`, {
-          align: 'left',
-          continue: true,
-        });
+        .text(`Índice: ${saleId}`, { align: 'center' })
+        .text(`Nombre del Cliente: ${sale.client.fullName}`, { align: 'left' })
+        .text(`Lote: ${sale.lot.loteCode}`, { align: 'left' })
+        .text(`Número de Cuotas: ${sale.monthlyPayments.length}`, { align: 'left' });
 
       doc.moveDown();
 
-      // Encabezado de la tabla
-      doc
-        .font('Helvetica-Bold')
-        .fontSize(12)
-        .text('CRONOGRAMA DE PAGOS MENSUALES - VENTA AL CRÉDITO', {
-          align: 'center',
-        });
-      doc.moveDown();
-      const convertToDate = (dateInput: any): Date => {
-        if (!(dateInput instanceof Date)) {
-          return new Date(dateInput);
-        }
-        return dateInput;
-      };
-      // Datos de la tabla
       const creditData = [
-        
-        ['N°', 'MONTO', 'FECHA DE PAGO'],
+        ['Índice', 'Monto', 'Fecha de Pago'],
         ...sale.monthlyPayments.map((payment, index) => [
           (index + 1).toString(),
-          `S/ ${payment.amount} `, // Índice // Monto
-          convertToDate(payment.dueDate).toLocaleDateString('es-ES'), // Formato de fecha local
+          payment.amount ,
+          payment.dueDate ,
         ]),
       ];
 
-      // Configuración de la tabla
-      doc.table({
+      (doc as any).table({
         headers: creditData[0],
         rows: creditData.slice(1),
-
-        columnWidth: [1, 180, 240], // Ajustar el ancho de las columnas
-        // align: ['center', 'right', 'left'],
+        columnWidth: [40, 100, 120],
+        align: ['center', 'right', 'left'],
         padding: 5,
         margin: { top: 15 },
         headerStyle: {
           font: 'Helvetica-Bold',
           fontSize: 12,
           color: '#FFFFFF',
-          fillColor: '#4F81BD', // Color de fondo
-          borderColor: '#4F81BD', // Color del borde
+          fillColor: '#4F81BD',
+          borderColor: '#4F81BD',
         },
-       
         rowStyle: {
           font: 'Helvetica',
           fontSize: 10,
           color: '#000000',
-          borderColor: '#DDDDDD', // Color del borde
+          borderColor: '#DDDDDD',
         },
         alternateRowStyle: {
-          fillColor: '#F4F4F4', // Color de fondo para filas alternas
+          fillColor: '#F4F4F4',
         },
         border: {
           width: 1,
-          color: '#DDDDDD', // Color del borde
+          color: '#DDDDDD',
         },
       });
 

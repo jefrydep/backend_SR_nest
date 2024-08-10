@@ -66,7 +66,7 @@ export class AuthController {
     return user;
   }
 
-  @Get("pdf/download")
+  @Get("pdf/donwload")
   async downloadPDF(@Res() res): Promise<void> {
     const buffer = await this.authService.generarPdf();
 

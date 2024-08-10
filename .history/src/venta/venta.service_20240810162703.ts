@@ -452,12 +452,11 @@ export class VentaService {
         .text(`Total de venta:`, { align: 'left', continued: true })
         .text(' ', { continued: true })
         .font('Helvetica')
-        .text(`${money}${sale.amount}`)
+        .text(`${money}${sale.amount}`, { continued: true })
         // .text('      ', { continued: true });
         .font('Helvetica-Bold')
-        .text(`N° Cuotas:  ${sale.installmentsNumber} Cuotas Mensualess`, {
+        .text(`Número de Cuotas: ${sale.monthlyPayments.length}`, {
           align: 'left',
-          continue: true,
         });
 
       doc.moveDown();
@@ -466,9 +465,7 @@ export class VentaService {
       doc
         .font('Helvetica-Bold')
         .fontSize(12)
-        .text('CRONOGRAMA DE PAGOS MENSUALES - VENTA AL CRÉDITO', {
-          align: 'center',
-        });
+        .text('Cuotas Mensuales:', { align: 'left' });
       doc.moveDown();
       const convertToDate = (dateInput: any): Date => {
         if (!(dateInput instanceof Date)) {
@@ -478,7 +475,6 @@ export class VentaService {
       };
       // Datos de la tabla
       const creditData = [
-        
         ['N°', 'MONTO', 'FECHA DE PAGO'],
         ...sale.monthlyPayments.map((payment, index) => [
           (index + 1).toString(),
@@ -503,7 +499,6 @@ export class VentaService {
           fillColor: '#4F81BD', // Color de fondo
           borderColor: '#4F81BD', // Color del borde
         },
-       
         rowStyle: {
           font: 'Helvetica',
           fontSize: 10,

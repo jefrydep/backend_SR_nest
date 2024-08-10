@@ -288,239 +288,53 @@ export class VentaService {
   //   });
   //   return pdfBuffer;
   // }
-  // async generarPdf(saleId: string): Promise<Buffer> {
-  //   const pdfBuffer: Buffer = await new Promise(async (resolvePromise) => {
-  //     const doc = new PDFDocument({
-  //       size: 'LETTER',
-  //     });
-
-  //     // Encabezado de la página
-
-  //     // Obtener la venta por ID
-  //     const sale = await this.ventaRepository.findOne({
-  //       where: { id: saleId },
-  //       relations:['client','lot']
-  //     });
-
-  //     if (!sale) {
-  //       throw new NotFoundException(`Venta with ID ${saleId} not found`);
-  //     }
-  //     console.log(sale);
-  //     doc.registerFont('Helvetica-Bold', 'Helvetica-Bold');
-  //     doc
-  //       .font('Helvetica-Bold')
-  //       .fontSize(10)
-  //       .text('JefryDeveloper', 50, 10, { align: 'left' });
-
-  //     doc.fontSize(16).text(' RESIDENCIAL PALOMINO', { align: 'center' });
-  //     doc.text(` Total de venta: ${sale.amount}`);
-  //     doc.text(`Credito:  } Inicial:${sale.initial}  `);
-  //     doc.text(`  Cliente: ${sale.client.fullName}  `);
-  //     doc.text(
-  //       `Número de cuotas:${sale.installmentsNumber}   Inicial:${sale.initial}  `,
-  //     );
-  //     doc.moveDown();
-
-  //     doc.text(` CRONOGRAMA DE PAGOS MENSUALES - VENTA AL CRÉDITO `);
-  //     // Crear los datos para la tabla en el PDF
-  //     const creditData = [
-  //       ['Nro', 'Monto', 'Fecha de Pago'],
-  //       ...sale.monthlyPayments.map((payment, index) => [
-  //         index + 1,
-  //         payment.amount, // Formato a 2 decimales
-  //         payment.dueDate // Formato de fecha local
-  //       ]),
-  //     ];
-
-  //     // Generar la tabla en el PDF
-  //     doc.table({
-  //       headers: creditData[0],
-  //       rows: creditData.slice(1),
-
-  //       width: { min: 50, max: 150 },
-  //       align: ['center', 'right','left'],
-  //       padding: 10,
-  //       margin: { top: 15 },
-  //       alternateRowStyle: {
-  //         fillColor: '#F4F4F4', // Color de fondo para filas alternas
-  //       },
-  //       border: {
-  //         width: 1,
-  //         color: '#DDDDDD', // Color del borde
-  //       },
-  //     });
-
-  //     // Finalizar el documento PDF
-  //     const buffer: Buffer[] = [];
-  //     doc.on('data', (data: Buffer) => buffer.push(data));
-  //     doc.on('end', () => {
-  //       const data = Buffer.concat(buffer);
-  //       resolvePromise(data);
-  //     });
-
-  //     doc.end();
-  //   });
-
-  //   return pdfBuffer;
-  // }
-
   async generarPdf(saleId: string): Promise<Buffer> {
     const pdfBuffer: Buffer = await new Promise(async (resolvePromise) => {
-      const RucId = '10107506293420';
-      const address = 'jr: lima 456';
-      const money = 'S/ ';
       const doc = new PDFDocument({
         size: 'LETTER',
       });
 
       // Encabezado de la página
       doc.registerFont('Helvetica-Bold', 'Helvetica-Bold');
-      doc.registerFont('Helvetica', 'Helvetica');
-
       doc
         .font('Helvetica-Bold')
-        .fontSize(12)
-        .text(' RESIDENCIAL PALOMINO', 50, 10, { align: 'left' });
-      // .text('RUC:', 50, 10, { align: 'left' });
+        .fontSize(10)
+        .text('JefryDeveloper', 50, 10, { align: 'left' });
 
-      doc.moveDown(3);
-      doc
-        .fontSize(16)
-        .text(' EMPRESA INMOBILIARIA PALOMINO S.A.C', { align: 'center' })
-        .font('Helvetica')
-        .text(`RUC:    ${RucId}`, { align: 'center' })
-        .text(`${address}`, { align: 'center' });
+      doc.fontSize(16).text('Lista de Créditos', { align: 'center' });
       doc.moveDown();
 
       // Obtener la venta por ID
       const sale = await this.ventaRepository.findOne({
         where: { id: saleId },
-        relations: ['client', 'lot'],
       });
 
       if (!sale) {
         throw new NotFoundException(`Venta with ID ${saleId} not found`);
       }
-      const lot = await this.lotRespository.findOne({
-        where: { id: sale.lot.id },
-        relations: ['block'],
-      });
-      if (!lot) {
-        throw new NotFoundException('Lot not found');
-      }
-      //  console.log(sale)
-      console.log(lot);
 
-      // Información general
-      doc
-
-        .fontSize(12)
-        // .text(`Índice: ${saleId}`, { align: 'center' })
-        .font('Helvetica-Bold')
-        .text(`Cliente:`, { align: 'left', continued: true })
-        // .moveUp()
-        .text('       ', { continued: true })
-        .font('Helvetica')
-        .text(`${sale.client.fullName}`, { continued: true })
-        .text('       ', { continued: true })
-        .font('Helvetica-Bold')
-        .text(`Dni/Ruc: `, { continued: true })
-        .font('Helvetica')
-        .text(`${sale.client.dni}`)
-
-        // Lote
-        .font('Helvetica-Bold')
-        .text(`Lote:`, { align: 'left', continued: true })
-        .text('           ', { continued: true })
-        .font('Helvetica')
-        .text(`${lot.block.block}  ${sale.lot.loteCode}`, {})
-        .font('Helvetica-Bold')
-        .text(`Crédito:`, { align: 'left', continued: true })
-        .text('      ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.remainingAmount}`, { continued: true })
-        .text('      ', { continued: true })
-        // INICIAL
-        .font('Helvetica-Bold')
-        .text(`Inicial:`, { align: 'left', continued: true })
-        .text(' ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.initial}`, { continued: true })
-        .text('      ', { continued: true })
-        // TOTAL DE VENTA
-        .font('Helvetica-Bold')
-        .text(`Total de venta:`, { align: 'left', continued: true })
-        .text(' ', { continued: true })
-        .font('Helvetica')
-        .text(`${money}${sale.amount}`)
-        // .text('      ', { continued: true });
-        .font('Helvetica-Bold')
-        .text(`N° Cuotas:  ${sale.installmentsNumber} Cuotas Mensualess`, {
-          align: 'left',
-          continue: true,
-        });
-
-      doc.moveDown();
-
-      // Encabezado de la tabla
-      doc
-        .font('Helvetica-Bold')
-        .fontSize(12)
-        .text('CRONOGRAMA DE PAGOS MENSUALES - VENTA AL CRÉDITO', {
-          align: 'center',
-        });
-      doc.moveDown();
-      const convertToDate = (dateInput: any): Date => {
-        if (!(dateInput instanceof Date)) {
-          return new Date(dateInput);
-        }
-        return dateInput;
-      };
-      // Datos de la tabla
+      // Crear los datos para la tabla en el PDF
       const creditData = [
-        
-        ['N°', 'MONTO', 'FECHA DE PAGO'],
-        ...sale.monthlyPayments.map((payment, index) => [
-          (index + 1).toString(),
-          `S/ ${payment.amount} `, // Índice // Monto
-          convertToDate(payment.dueDate).toLocaleDateString('es-ES'), // Formato de fecha local
+        ['Monto', 'Fecha de Pago'],
+        ...sale.monthlyPayments.map((payment) => [
+          payment.amount, // Formato a 2 decimales
+          payment.dueDate, // Formato de fecha local
         ]),
       ];
 
-      // Configuración de la tabla
+      // Generar la tabla en el PDF
       doc.table({
         headers: creditData[0],
         rows: creditData.slice(1),
-
-        columnWidth: [1, 180, 240], // Ajustar el ancho de las columnas
-        // align: ['center', 'right', 'left'],
+        width: { min: 50, max: 150 },
+        align: ['left', 'left'],
         padding: 5,
         margin: { top: 15 },
-        headerStyle: {
-          font: 'Helvetica-Bold',
-          fontSize: 12,
-          color: '#FFFFFF',
-          fillColor: '#4F81BD', // Color de fondo
-          borderColor: '#4F81BD', // Color del borde
-        },
-       
-        rowStyle: {
-          font: 'Helvetica',
-          fontSize: 10,
-          color: '#000000',
-          borderColor: '#DDDDDD', // Color del borde
-        },
-        alternateRowStyle: {
-          fillColor: '#F4F4F4', // Color de fondo para filas alternas
-        },
-        border: {
-          width: 1,
-          color: '#DDDDDD', // Color del borde
-        },
       });
 
-      const buffer = [];
-      doc.on('data', (data) => buffer.push(data));
+      // Finalizar el documento PDF
+      const buffer: Buffer[] = [];
+      doc.on('data', (data: Buffer) => buffer.push(data));
       doc.on('end', () => {
         const data = Buffer.concat(buffer);
         resolvePromise(data);

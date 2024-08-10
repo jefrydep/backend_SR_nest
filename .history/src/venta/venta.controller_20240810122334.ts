@@ -63,9 +63,9 @@ export class VentaController {
     return this.ventaService.remove(+id);
   }
   
-  @Get("pdf/creditList/:id")
-  async downloadPDF( @Param('id',ParseUUIDPipe)id:string,@Res() res): Promise<void> {
-    const buffer = await this.ventaService.generarPdf(id);
+  @Get("pdf/download/creditList")
+  async downloadPDF(@Res() res): Promise<void> {
+    const buffer = await this.ventaService.generarPdf();
 
     res.set({
       'Content-Type': 'application/pdf',
@@ -75,18 +75,4 @@ export class VentaController {
 
     res.end(buffer);
   }
-  // @Get('pdf/:id')
-  // async generatePdf(@Param('id',ParseUUIDPipe) id: string, @Res() res: Response) {
-  //   try {
-  //     const pdfBuffer = await this.ventaService.generarPdf(id);
-  //     res.set({
-  //       'Content-Type': 'application/pdf',
-  //       'Content-Disposition': `attachment; filename="venta-${id}.pdf"`,
-  //       'Content-Length': pdfBuffer.length,
-  //     });
-  //     res.end(pdfBuffer);
-  //   } catch (error) {
-  //     throw new NotFoundException(`Error generating PDF: ${error.message}`);
-  //   }
-  // }
 }
