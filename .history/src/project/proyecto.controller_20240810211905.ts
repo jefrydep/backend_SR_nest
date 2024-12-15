@@ -19,9 +19,9 @@ export class ProyectoController {
   constructor(private readonly proyectoService: ProyectoService) {}
 
   @Post('register')
-  @Auth(validRoles.user)
+  // @Auth(validRoles.user)
   create(@Body() createProyectoDto: CreateProyectoDto) {
-    return this.proyectoService.create(createProyectoDto); 
+    return this.proyectoService.create(createProyectoDto);
   }
 
   @Get('findAll')

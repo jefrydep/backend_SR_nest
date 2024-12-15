@@ -34,11 +34,11 @@ export class ClienteController {
   }
   // @Post('register')
   // create(@Body() createClientDto: CreateClienteDto) {
-  //   return this.clienteService.create(createClientDto);
-  // }
-
-  @Get('findAll')
-  @Auth(validRoles.user)
+    //   return this.clienteService.create(createClientDto);
+    // }
+    
+    @Get('findAll')
+    @Auth(validRoles.user)
   findAll(@Query() paginationDto: PaginationDto) {
     return this.clienteService.findAll(paginationDto);
   }
@@ -48,14 +48,12 @@ export class ClienteController {
   // }
 
   @Get(':id')
-  @Auth(validRoles.user)
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.clienteService.findOne(id);
   }
 
   @Patch(':id')
-  @Auth(validRoles.user)
-  // @Auth(validRoles.user, validRoles.admin)
+  @Auth(validRoles.user, validRoles.admin)
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateClienteDto: UpdateClienteDto,
@@ -65,13 +63,11 @@ export class ClienteController {
   }
 
   @Delete(':id')
-  @Auth(validRoles.user)
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.clienteService.remove(id);
   }
 
   @Get('pdf/donwload')
-  @Auth(validRoles.user)
   async downloadPDF(@Res() res): Promise<void> {
     const buffer = await this.clienteService.generarPdfClientes();
 

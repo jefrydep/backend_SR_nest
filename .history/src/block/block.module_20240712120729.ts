@@ -4,10 +4,12 @@ import { BlockController } from './block.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Block } from './entities/block.entity';
 import { Proyecto } from 'src/project/entities/proyecto.entity';
-import { AuthModule } from 'src/auth/auth.module';
 @Module({
   controllers: [BlockController],
   providers: [BlockService],
-  imports: [TypeOrmModule.forFeature([Block, Proyecto]), AuthModule],
+  imports:[
+
+    TypeOrmModule.forFeature([Block,Proyecto])
+  ]
 })
 export class BlockModule {}

@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseUUIDPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { BlockService } from './block.service';
 import { CreateBlockDto } from './dto/create-block.dto';
 import { UpdateBlockDto } from './dto/update-block.dto';
@@ -25,28 +16,21 @@ export class BlockController {
   }
 
   @Get('project/:projectId')
-  @Auth(validRoles.user)
-  findAll(@Param('projectId', ParseUUIDPipe) projectId: string) {
+  findAll(@Param('projectId',ParseUUIDPipe)projectId:string) {
     return this.blockService.findAll(projectId);
   }
 
   @Get(':id')
-  @Auth(validRoles.user)
   findOne(@Param('id') id: string) {
     return this.blockService.findOne(+id);
   }
 
   @Patch(':id')
-  @Auth(validRoles.user)
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateBlockDto: UpdateBlockDto,
-  ) {
+  update(@Param('id',ParseUUIDPipe) id: string, @Body() updateBlockDto: UpdateBlockDto) {
     return this.blockService.update(id, updateBlockDto);
   }
 
   @Delete(':id')
-  @Auth(validRoles.user)
   remove(@Param('id') id: string) {
     return this.blockService.remove(+id);
   }

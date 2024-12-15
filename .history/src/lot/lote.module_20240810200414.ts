@@ -9,6 +9,9 @@ import { AuthModule } from 'src/auth/auth.module';
 @Module({
   controllers: [LoteController],
   providers: [LoteService],
-  imports: [TypeOrmModule.forFeature([Lot, Block]), AuthModule],
+  imports:[
+    TypeOrmModule.forFeature([Lot,Block]),
+    AuthModule
+  ]
 })
 export class LoteModule {}

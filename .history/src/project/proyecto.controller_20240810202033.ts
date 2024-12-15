@@ -21,7 +21,7 @@ export class ProyectoController {
   @Post('register')
   @Auth(validRoles.user)
   create(@Body() createProyectoDto: CreateProyectoDto) {
-    return this.proyectoService.create(createProyectoDto); 
+    return this.proyectoService.create(createProyectoDto);
   }
 
   @Get('findAll')
